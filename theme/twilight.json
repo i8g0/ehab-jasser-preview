@@ -120,7 +120,7 @@
   ],
   "components": [
     {
-      "key": "dbff7e86-8e9c-49f8-bb7f-e9d924e879e5",
+      "key": "f9b92e28-fa6d-47b7-a650-c62ff12a07fc",
       "title": {
         "ar": "المشاهد السينمائية",
         "en": "Cinematic scenes"
@@ -131,7 +131,7 @@
         {
           "type": "static",
           "format": "description",
-          "id": "note-32ac0ba1",
+          "id": "note-17104502",
           "value": "<div>مشاهد بملء الشاشة تتكشّف مع التمرير. لكل مشهد فيديو (رابط mp4 صامت، ٥–١٠ ثوانٍ، أقل من ٤ ميغا) وصورة تظهر قبل تحميله أو بدونه.</div>"
         },
         {
@@ -153,7 +153,7 @@
               "multilanguage": false,
               "required": false,
               "icon": "sicon-video",
-              "key": "8ea70565-bf9a-4116-8856-3d1ee9dbee6e"
+              "key": "8d8b7eba-348d-4930-be5a-fb3875cca4ba"
             },
             {
               "type": "string",
@@ -164,7 +164,7 @@
               "multilanguage": false,
               "required": false,
               "icon": "sicon-video",
-              "key": "0fb7746f-c6fa-49f1-a579-4accd7c31ce8"
+              "key": "d9e41cc2-91a1-4356-aff2-e502d88bce79"
             },
             {
               "type": "number",
@@ -177,7 +177,7 @@
               "maximum": 30,
               "required": false,
               "icon": "sicon-repeat",
-              "key": "5d0a81f4-d36f-488d-9208-85dde11b6961"
+              "key": "4be7ce8c-4fcb-44b3-a68b-695a85842965"
             },
             {
               "type": "string",
@@ -188,7 +188,18 @@
               "required": false,
               "icon": "sicon-image",
               "description": null,
-              "key": "cc5be916-f822-4317-ac63-2c2579c1ee82"
+              "key": "30bcf0f3-b022-4f34-a09c-55228eda46d8"
+            },
+            {
+              "type": "string",
+              "format": "image",
+              "id": "slides.image_mobile",
+              "label": "صورة المشهد للجوال (عمودية 9:16)",
+              "value": null,
+              "required": false,
+              "icon": "sicon-image",
+              "description": null,
+              "key": "86a75d47-1431-4495-8bc7-4b438c8a8432"
             },
             {
               "type": "items",
@@ -200,24 +211,24 @@
                 {
                   "label": "فاتح (صورة على خلفية بيضاء)",
                   "value": "light",
-                  "key": "a753fa29-dfbc-4848-8da1-1c8f837d48a6"
+                  "key": "2ec09cdf-850c-416c-be46-06b2cad4ef10"
                 },
                 {
                   "label": "داكن (صورة أو فيديو كامل)",
                   "value": "dark",
-                  "key": "ee4b9baf-9ce8-480c-81a2-63ee93a565b3"
+                  "key": "12e54cfd-3f26-4a96-8446-48371b616a98"
                 }
               ],
               "selected": [
                 {
                   "label": "داكن (صورة أو فيديو كامل)",
                   "value": "dark",
-                  "key": "ee4b9baf-9ce8-480c-81a2-63ee93a565b3"
+                  "key": "12e54cfd-3f26-4a96-8446-48371b616a98"
                 }
               ],
               "required": true,
               "icon": "sicon-list",
-              "key": "77fd709f-0321-4ed1-a85a-2116e3d3b964"
+              "key": "52d80e26-9f2d-4b38-9a33-e84ab60e7a0e"
             },
             {
               "type": "string",
@@ -228,7 +239,7 @@
               "multilanguage": true,
               "required": false,
               "icon": "sicon-format-text-alt",
-              "key": "7c9c5dc4-3b19-426a-9549-e8380b4cd094"
+              "key": "4d9e164c-f3f8-4b89-a679-ea31cc3fdaf8"
             },
             {
               "type": "string",
@@ -239,7 +250,7 @@
               "multilanguage": true,
               "required": false,
               "icon": "sicon-format-text-alt",
-              "key": "3411cbe1-b1bb-4a29-bd42-df4a1d8bf7a8"
+              "key": "1b23e1bf-6735-4fc1-9028-ea0cbd4cc172"
             },
             {
               "type": "string",
@@ -250,7 +261,7 @@
               "multilanguage": true,
               "required": false,
               "icon": "sicon-format-text-alt",
-              "key": "8f1688b6-c04e-4957-80de-d0eb3fad6156"
+              "key": "b774537d-7116-4490-9380-968e4583d120"
             },
             {
               "type": "string",
@@ -261,7 +272,7 @@
               "multilanguage": true,
               "required": false,
               "icon": "sicon-format-text-alt",
-              "key": "a17d7a63-b87d-4534-adfc-6f28880cf476"
+              "key": "41431f2a-063c-4de9-8f48-3ee1df5eb657"
             },
             {
               "type": "items",
@@ -300,7 +311,7 @@
               "value": null,
               "required": false,
               "icon": "sicon-link",
-              "key": "a2a751f6-d08b-46dc-bd4d-21f8e9ca39e8"
+              "key": "0a272810-2853-408f-93d0-f0e38586a4cc"
             }
           ],
           "value": [
@@ -330,7 +341,7 @@
       ]
     },
     {
-      "key": "138b6542-b871-4a8b-b8fa-cf6e49ea0626",
+      "key": "60909401-ae65-4d12-820f-1feb2343d71e",
       "title": {
         "ar": "حلقات المجموعات",
         "en": "Collection rings"
@@ -357,7 +368,7 @@
               "required": false,
               "icon": "sicon-image",
               "description": null,
-              "key": "0880fa77-1572-4f57-b201-082b2f2adc08"
+              "key": "43c6144c-2109-4708-bc28-143b999f6e0d"
             },
             {
               "type": "string",
@@ -368,7 +379,7 @@
               "multilanguage": true,
               "required": false,
               "icon": "sicon-format-text-alt",
-              "key": "138d5c3f-8e19-4f66-a8f6-0bc64771c79d"
+              "key": "4a6f03a5-841b-4f41-b2fd-5e5a6dc0c36d"
             },
             {
               "type": "items",
@@ -407,7 +418,7 @@
               "value": null,
               "required": false,
               "icon": "sicon-link",
-              "key": "637d64ed-d164-49d9-9d61-279ef5d65ec1"
+              "key": "1e1a6f72-1309-45df-aac6-92eab288f8c9"
             }
           ],
           "value": [
@@ -431,7 +442,7 @@
       ]
     },
     {
-      "key": "349b7e31-2862-4cf9-af2c-a23df9642131",
+      "key": "d0b56402-7dd2-4f5d-828b-28c9e4dfd6f8",
       "title": {
         "ar": "شارات الثقة",
         "en": "Trust chips"
@@ -459,39 +470,39 @@
                 {
                   "label": "بطاقة",
                   "value": "card",
-                  "key": "0eafa309-501d-49b0-b4bc-69b9bed19541"
+                  "key": "6464d07a-fcd8-4709-9598-feed48ac4a8a"
                 },
                 {
                   "label": "ساعة",
                   "value": "clock",
-                  "key": "332e8e0d-2203-4e2a-ad42-a97911c001a2"
+                  "key": "7c41103f-149b-44d9-9c33-95f4f993eed1"
                 },
                 {
                   "label": "شاحنة",
                   "value": "truck",
-                  "key": "e128f570-f8b5-4e36-a909-4cbf9daa876e"
+                  "key": "464ad7a7-2255-4ab8-8fd7-c7b0c1fd2395"
                 },
                 {
                   "label": "هدية",
                   "value": "gift",
-                  "key": "9eede71d-cb1d-4e61-a9ce-a39f323eb3af"
+                  "key": "cfe2b434-908e-4fe5-b6c2-76224ddf312f"
                 },
                 {
                   "label": "درع",
                   "value": "shield",
-                  "key": "71cbee63-0837-4538-8466-ce79e08f13f4"
+                  "key": "75679299-d0f4-4385-82cf-d1b14081a76e"
                 }
               ],
               "selected": [
                 {
                   "label": "بطاقة",
                   "value": "card",
-                  "key": "0eafa309-501d-49b0-b4bc-69b9bed19541"
+                  "key": "6464d07a-fcd8-4709-9598-feed48ac4a8a"
                 }
               ],
               "required": true,
               "icon": "sicon-list",
-              "key": "e404d3b9-4604-46b0-861a-80a310a8f04f"
+              "key": "84b59ef7-99ce-430a-867f-0b7d30387758"
             },
             {
               "type": "string",
@@ -502,7 +513,7 @@
               "multilanguage": true,
               "required": false,
               "icon": "sicon-format-text-alt",
-              "key": "db1a2604-0073-44cf-b56c-e0651aa9de9e"
+              "key": "5025ff21-ede3-4bd3-aef3-1a308b7a541e"
             }
           ],
           "value": [
@@ -527,7 +538,7 @@
       ]
     },
     {
-      "key": "bf34ea97-ea93-4b87-b8e9-352361d8c011",
+      "key": "0d8537ba-57a9-4899-afcc-f8afb85f8f34",
       "title": {
         "ar": "منتج مميّز بصورة كبيرة",
         "en": "Product spotlight"
@@ -624,7 +635,7 @@
       ]
     },
     {
-      "key": "2afa848b-ac50-4c12-8eb6-3f5e7b6d0a84",
+      "key": "4f9e1498-6d45-48f7-9cad-17fa79d0e283",
       "title": {
         "ar": "بنر الإرث",
         "en": "Heritage banner"
@@ -691,7 +702,7 @@
       ]
     },
     {
-      "key": "a9d9924e-e23d-41ea-a022-4caf82e485f4",
+      "key": "cd8ad052-30de-4343-991f-ceb7026412e3",
       "title": {
         "ar": "البوتيك (منتجات مع فلاتر)",
         "en": "Boutique"
@@ -702,7 +713,7 @@
         {
           "type": "static",
           "format": "description",
-          "id": "note-3aa788aa",
+          "id": "note-83799962",
           "value": "<div>تتكوّن الفلاتر تلقائيًا من تصنيفات المنتجات المختارة.</div>"
         },
         {
@@ -774,7 +785,7 @@
       ]
     },
     {
-      "key": "94546108-1ce7-4a73-a5a1-55c5018ad584",
+      "key": "af563432-1298-44b7-9443-86e3eb02eb23",
       "title": {
         "ar": "بوصلة الاتجاهات",
         "en": "Directions compass"
@@ -831,7 +842,7 @@
       ]
     },
     {
-      "key": "e1442d31-3ccf-48cf-ae3f-b99d97ea6f36",
+      "key": "61da0fc2-5202-4489-9063-6ed2e2c1a3d0",
       "title": {
         "ar": "وش مودك اليوم؟",
         "en": "Mood picker"
@@ -842,7 +853,7 @@
         {
           "type": "static",
           "format": "description",
-          "id": "note-1e3b37b4",
+          "id": "note-41d51b85",
           "value": "<div>اختر ثلاثة منتجات بالترتيب، وكل منتج يأخذ العبارة واللون المقابلين له.</div>"
         },
         {
@@ -924,7 +935,7 @@
       ]
     },
     {
-      "key": "ceca0a04-d301-4b5c-86d2-7447acc5f146",
+      "key": "a12a0003-9fca-4a6e-ae4e-dbe479660de1",
       "title": {
         "ar": "سنوات (قوارير بأرقام)",
         "en": "Years"
@@ -981,7 +992,7 @@
       ]
     },
     {
-      "key": "800909cc-3804-4afd-9b8e-06e6958d1828",
+      "key": "237db8ce-77ac-4f40-97c0-7d26ff3d8928",
       "title": {
         "ar": "قصة العلامة",
         "en": "The house"
@@ -1100,7 +1111,7 @@
       ]
     },
     {
-      "key": "992d31f5-5aa2-43af-bf32-9a0d951aa39d",
+      "key": "31829679-8190-4896-853d-1d0240bf08ca",
       "title": {
         "ar": "قالوا عن العطر",
         "en": "Words"
@@ -1147,7 +1158,7 @@
               "multilanguage": true,
               "required": false,
               "icon": "sicon-typography",
-              "key": "7629aaae-cd7d-4910-a4fe-d1c637c68e07"
+              "key": "d0740f64-e317-4d68-a69f-027856022b7a"
             },
             {
               "type": "string",
@@ -1158,7 +1169,7 @@
               "multilanguage": true,
               "required": false,
               "icon": "sicon-format-text-alt",
-              "key": "02236b16-819d-4c00-b687-ce7b2de728b6"
+              "key": "d0b6250b-0026-405e-ab3a-66409fde2ee7"
             },
             {
               "type": "string",
@@ -1169,7 +1180,7 @@
               "multilanguage": true,
               "required": false,
               "icon": "sicon-format-text-alt",
-              "key": "74faf3fb-b9f3-425e-939e-6d9f8e205ba3"
+              "key": "1e87f1a8-8fb5-44b7-a067-04b1340cbe27"
             }
           ],
           "value": [
@@ -1198,7 +1209,7 @@
       ]
     },
     {
-      "key": "297f6fa0-ae3d-413c-a99f-d7442c3c68d0",
+      "key": "136be162-f2cb-49ed-881a-a9ae2b0c7466",
       "title": {
         "ar": "القائمة الخاصة",
         "en": "Private list"

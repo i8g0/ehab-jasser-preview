@@ -16,11 +16,14 @@
             <div class="ej-scene__media" data-scene-media>
                 <div class="ej-scene__drift">
                     {% if slide.image %}
-                        <img class="ej-scene__img" src="{{ slide.image }}" alt="{{ slide.title }} {{ slide.accent }}" {{ loop.first ? 'fetchpriority="high"' : 'loading="lazy"' }}>
+                        <picture>
+                            {% if slide.image_mobile %}<source media="(orientation: portrait)" srcset="{{ slide.image_mobile }}">{% endif %}
+                            <img class="ej-scene__img" src="{{ slide.image }}" alt="{{ slide.title }} {{ slide.accent }}" {{ loop.first ? 'fetchpriority="high"' : 'loading="lazy"' }}>
+                        </picture>
                     {% endif %}
                     {% if slide.video %}
                         <video class="ej-scene__video" muted playsinline loop preload="none" aria-hidden="true"
-                               {% if slide.image %}poster="{{ slide.image }}"{% endif %}
+                               data-poster="{{ slide.image }}" data-poster-mobile="{{ slide.image_mobile }}"
                                data-src="{{ slide.video }}" data-src-mobile="{{ slide.video_mobile }}" data-loop-start="{{ slide.loop_start ?: 0 }}"></video>
                     {% endif %}
                 </div>

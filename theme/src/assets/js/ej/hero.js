@@ -8,7 +8,8 @@ const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const finePointer = matchMedia('(hover: hover) and (pointer: fine)').matches;
-const phone = matchMedia('(max-width: 767px)');
+/* tall screens (phones, portrait tablets) get the vertical cut, where the bottle is framed in the middle */
+const portrait = matchMedia('(orientation: portrait)');
 
 export function hero() {
   const root = $('[data-ej-scenes]');
@@ -22,9 +23,25 @@ export function hero() {
 
   /* ---------- video: lazy source, play only what is on screen ---------- */
   const videos = scenes.map((s) => $('video', s));
+  const pickSrc = (v) => (portrait.matches && v.dataset.srcMobile) || v.dataset.src;
+  const pickPoster = (v) => (portrait.matches && v.dataset.posterMobile) || v.dataset.poster || '';
+  /* rotating the phone or resizing the window swaps to the right cut, keeping the playhead */
+  const syncCut = () => videos.forEach((v) => {
+    if (!v || !v.dataset.loaded) return;
+    const next = pickSrc(v);
+    if (!next || v.src.endsWith(next)) return;
+    const t = v.currentTime;
+    const wasPlaying = !v.paused;
+    v.poster = pickPoster(v);
+    v.src = next;
+    v.addEventListener('loadedmetadata', () => { v.currentTime = t; if (wasPlaying) { const p = v.play(); if (p) p.catch(() => {}); } }, { once: true });
+  });
+  portrait.addEventListener('change', syncCut);
+  let cutTimer;
+  addEventListener('resize', () => { clearTimeout(cutTimer); cutTimer = setTimeout(syncCut, 200); });
   const load = (v) => {
     if (!v || v.dataset.loaded) return;
-    const src = (phone.matches && v.dataset.srcMobile) || v.dataset.src;
+    const src = pickSrc(v);
     if (!src) return;
     v.dataset.loaded = '1';
     /* "loop from": the opening reveal plays once, then the clip loops on its steady part.
@@ -37,6 +54,13 @@ export function hero() {
         v.addEventListener('loadedmetadata', () => { v.currentTime = loopFrom; }, { once: true });
       }
     }
+    /* iOS only autoplays inline, muted media: set it as properties, not just attributes */
+    v.muted = true;
+    v.defaultMuted = true;
+    v.playsInline = true;
+    v.setAttribute('playsinline', '');
+    v.setAttribute('webkit-playsinline', '');
+    v.poster = pickPoster(v);
     v.src = src;
     v.preload = 'auto';
     v.addEventListener('playing', () => v.closest('.ej-scene').classList.add('has-video'), { once: true });
@@ -45,10 +69,28 @@ export function hero() {
     if (!v || reduced) return;
     load(v);
     /* wait for the opening curtain, so the first film is seen from its first frame */
-    if (!v.paused || !root.classList.contains('is-ready')) return;
+    if (!v.paused || !root.classList.contains('is-ready') || v.dataset.blocked) return;
     const p = v.play();
-    if (p) p.catch(() => {});
+    if (p) p.catch(() => { v.dataset.blocked = '1'; armUnlock(); });
   };
+  /* Low Power Mode / data saver on phones refuse autoplay: the first touch starts the films instead */
+  let armed = false;
+  const armUnlock = () => {
+    if (armed) return;
+    armed = true;
+    const unlock = () => {
+      ['touchend', 'click', 'keydown'].forEach((t) => removeEventListener(t, unlock, true));
+      videos.forEach((v) => { if (v) delete v.dataset.blocked; });
+      frame();
+    };
+    ['touchend', 'click', 'keydown'].forEach((t) => addEventListener(t, unlock, { capture: true, passive: true }));
+  };
+  /* a page opened in a background tab refuses playback too: retry when it comes to the front */
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) return;
+    videos.forEach((v) => { if (v) delete v.dataset.blocked; });
+    frame();
+  });
   const pause = (v) => { if (v && !v.paused) v.pause(); };
 
   /* ---------- the scene that owns the stage ---------- */
@@ -65,6 +107,7 @@ export function hero() {
   };
 
   /* ---------- per-frame choreography ---------- */
+  const parts = scenes.map((s) => ({ media: s.firstElementChild, shade: $('.ej-scene__shade', s), copy: $('.ej-scene__copy', s) }));
   const frame = () => {
     ticking = false;
     const vh = innerHeight;
@@ -78,7 +121,7 @@ export function hero() {
       if (r > 1.05 || r < -1.05) { pause(videos[i]); return; }
       play(videos[i]);
       if (reduced) return;
-      const media = scene.firstElementChild;
+      const { media, shade: shadeEl, copy } = parts[i];
       let y = 0;
       let scale = 1;
       let shade = 0;
@@ -91,8 +134,12 @@ export function hero() {
         shade = Math.min(0.72, -r * 0.9);
       }
       media.style.transform = `translate3d(0, ${y.toFixed(1)}px, 0) scale(${scale.toFixed(4)})`;
-      scene.style.setProperty('--shade', shade.toFixed(3));
-      scene.style.setProperty('--lift', Math.max(0, -r).toFixed(3));
+      if (shadeEl) shadeEl.style.opacity = shade.toFixed(3);
+      const lift = Math.max(0, -r);
+      if (copy) {
+        copy.style.transform = `translate3d(0, ${(lift * -90).toFixed(1)}px, 0)`;
+        copy.style.opacity = Math.max(0, 1 - lift * 1.6).toFixed(3);
+      }
     });
     setCurrent(best);
 
@@ -149,7 +196,8 @@ export function hero() {
 }
 
 function dust(canvas) {
-  if (!canvas || reduced) return;
+  /* the floating dust is a desktop luxury; phones spend that budget on smooth video */
+  if (!canvas || reduced || !finePointer) { canvas?.remove(); return; }
   const ctx = canvas.getContext('2d');
   const dpr = Math.min(2, devicePixelRatio || 1);
   let w = 0;

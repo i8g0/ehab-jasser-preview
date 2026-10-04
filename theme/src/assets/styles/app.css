@@ -412,7 +412,7 @@ body[data-hero-tone="dark"] .ej-header:not(.is-solid) .ej-header__logo img { fil
   .ej-scene--dark .ej-scene__media::after { background: linear-gradient(to left, rgba(10, 7, 5, .82), rgba(10, 7, 5, .05) 62%), linear-gradient(to top, rgba(10, 7, 5, .55), transparent 45%); }
   [dir="ltr"] .ej-scene--dark .ej-scene__media::after { background: linear-gradient(to right, rgba(10, 7, 5, .82), rgba(10, 7, 5, .05) 62%), linear-gradient(to top, rgba(10, 7, 5, .55), transparent 45%); }
 }
-.ej-scene__shade { position: absolute; inset: 0; z-index: 1; background: #0A0705; opacity: var(--shade); pointer-events: none; }
+.ej-scene__shade { position: absolute; inset: 0; z-index: 1; background: #0A0705; opacity: 0; pointer-events: none; will-change: opacity; }
 
 /* light scene: the product photo on white */
 .ej-scene--light { background: #fff; color: var(--ink); }
@@ -445,20 +445,17 @@ body[data-hero-tone="dark"] .ej-header:not(.is-solid) .ej-header__logo img { fil
 [dir="ltr"] .ej-scene--light.ej-scene--video .ej-scene__media::after { background: linear-gradient(to right, rgba(250, 248, 245, .82), rgba(250, 248, 245, 0) 55%); }
 .ej-scene--light.ej-scene--video .ej-scene__shade { background: #F4F2EF; }
 
-/* phones: the film takes the upper stage and melts into the page colour, copy sits below it */
+/* phones: the phone cut already frames the bottle high, with ambient light below for the copy */
 @media (max-width: 767px) {
-  .ej-scene--video .ej-scene__drift { inset: -2% 0 auto; height: 76%; }
-  .ej-scene--video .ej-scene__img,
-  .ej-scene--video .ej-scene__video {
-    -webkit-mask-image: linear-gradient(to bottom, #000 72%, transparent 100%);
-    mask-image: linear-gradient(to bottom, #000 72%, transparent 100%);
-  }
-  .ej-scene--dark.ej-scene--video .ej-scene__media::after { background: linear-gradient(to top, rgba(10, 7, 5, .95) 8%, rgba(10, 7, 5, 0) 45%); }
-  .ej-scene--light.ej-scene--video .ej-scene__media::after { background: linear-gradient(to top, #F4F2EF 6%, rgba(244, 242, 239, 0) 42%); }
-  .ej-scene--video .ej-scene__img { object-position: 34% 50%; } /* desktop poster: the bottle sits in its left third */
+  .ej-scene--video .ej-scene__drift { inset: 0; }
+  .ej-scene--dark.ej-scene--video .ej-scene__media::after { background: linear-gradient(to top, rgba(10, 7, 5, .9) 10%, rgba(10, 7, 5, 0) 50%); }
+  .ej-scene--light.ej-scene--video .ej-scene__media::after { background: linear-gradient(to top, rgba(244, 242, 239, .95) 8%, rgba(244, 242, 239, 0) 46%); }
   .ej-scene--video .ej-scene__copy { bottom: max(84px, 9svh); gap: 12px; }
   .ej-scene--video .ej-scene__title { font-size: clamp(40px, 11vw, 60px); }
 }
+
+/* on tall screens the desktop poster (bottle in its left third) is framed on the bottle */
+@media (orientation: portrait) { .ej-scene--video .ej-scene__img { object-position: 34% 50%; } }
 
 /* gold light that sweeps the scene as it takes the stage */
 .ej-scene__sweep {
@@ -486,8 +483,7 @@ body[data-hero-tone="dark"] .ej-header:not(.is-solid) .ej-header__logo img { fil
   flex-direction: column;
   align-items: flex-start;
   gap: 16px;
-  transform: translate3d(0, calc(var(--lift) * -90px), 0);
-  opacity: calc(1 - var(--lift) * 1.6);
+  will-change: transform, opacity;
 }
 @media (min-width: 900px) {
   .ej-scene__copy { inset-inline: 7vw auto; bottom: 16vh; max-width: 54vw; gap: 22px; }
@@ -1195,3 +1191,16 @@ body:has(.ej-scenes:not(.is-past)) .ej-pill { transform: translateY(160%); opaci
 .ej-scene.has-video .ej-scene__img { opacity: 0; }
 /* Latin lines like "1926 · EAU DE PARFUM" keep their own order inside Arabic pages */
 .ej-eyebrow { unicode-bidi: plaintext; }
+
+/* ---------- phones & tablets: spend the GPU on the films, not on effects ---------- */
+@media (pointer: coarse) {
+  .ej-grain { display: none; }
+  .js [data-split] .ej-w > span,
+  .js [data-words] .ej-w > span,
+  .ej-scene .ej-w > span { filter: none; }
+  .js .ej-scenes:not(.is-ready) .ej-scene:first-child .ej-scene__drift { filter: none; transform: scale(1.08); }
+  .ej-scene__sweep { mix-blend-mode: normal; opacity: 0; background-size: 100% 100%; background-position: 0 0; width: 60%; transform: translateX(-140%); }
+  .ej-scenes.is-ready .ej-scene.is-current .ej-scene__sweep { animation: ej-sweep-move 1.6s .15s var(--ease-in-out) both; }
+  .ej-scene__media { will-change: transform; }
+}
+@keyframes ej-sweep-move { 0% { opacity: .55; transform: translateX(-140%); } 100% { opacity: .55; transform: translateX(240%); } }
