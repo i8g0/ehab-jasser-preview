@@ -22,9 +22,20 @@
                         </picture>
                     {% endif %}
                     {% if slide.video %}
-                        <video class="ej-scene__video" muted playsinline loop preload="none" aria-hidden="true"
-                               data-poster="{{ slide.image }}" data-poster-mobile="{{ slide.image_mobile }}"
-                               data-src="{{ slide.video }}" data-src-mobile="{{ slide.video_mobile }}" data-loop-start="{{ slide.loop_start ?: 0 }}"></video>
+                        {% if loop.first %}
+                            {# the opening film is in the HTML itself, so the phone starts fetching and playing it
+                               while the page is still loading, without waiting for any script #}
+                            <video class="ej-scene__video" autoplay muted playsinline webkit-playsinline loop preload="auto" aria-hidden="true"
+                                   {% if slide.image %}poster="{{ slide.image }}"{% endif %}
+                                   data-src="{{ slide.video }}" data-src-mobile="{{ slide.video_mobile }}" data-poster="{{ slide.image }}" data-poster-mobile="{{ slide.image_mobile }}" data-loop-start="{{ slide.loop_start ?: 0 }}">
+                                {% if slide.video_mobile %}<source src="{{ slide.video_mobile }}" type="video/mp4" media="(orientation: portrait)">{% endif %}
+                                <source src="{{ slide.video }}" type="video/mp4">
+                            </video>
+                        {% else %}
+                            <video class="ej-scene__video" muted playsinline loop preload="none" aria-hidden="true"
+                                   data-poster="{{ slide.image }}" data-poster-mobile="{{ slide.image_mobile }}"
+                                   data-src="{{ slide.video }}" data-src-mobile="{{ slide.video_mobile }}" data-loop-start="{{ slide.loop_start ?: 0 }}"></video>
+                        {% endif %}
                     {% endif %}
                 </div>
             </div>

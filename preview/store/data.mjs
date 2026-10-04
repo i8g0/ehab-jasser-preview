@@ -121,7 +121,7 @@ export const comments = {
  */
 export const home = [
   { path: 'home.ej-hero', values: { slides: [
-    { tone: 'light', image: media('scene-1-poster.jpg'), image_mobile: media('scene-1-mobile-poster.jpg'), video: video('scene-1.mp4'), video_mobile: video('scene-1-mobile.mp4'), loop_start: 3,
+    { tone: 'light', image: media('scene-1-poster.jpg'), image_mobile: media('scene-1-mobile-poster.jpg'), video: video('scene-1.mp4'), video_mobile: video('scene-1-mobile.mp4'), loop_start: 0,
       eyebrow: '1926 · EAU DE PARFUM', url: '#shop' },
     { tone: 'dark', image: media('scene-2-poster.jpg'), image_mobile: media('scene-2-mobile-poster.jpg'), video: video('scene-2.mp4'), video_mobile: video('scene-2-mobile.mp4'), loop_start: 0,
       eyebrow: 'YEARS · EAU DE PARFUM', button: 'اكتشف عطور سنوات', url: '#shop' },

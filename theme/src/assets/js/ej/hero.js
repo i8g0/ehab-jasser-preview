@@ -29,7 +29,7 @@ export function hero() {
   const syncCut = () => videos.forEach((v) => {
     if (!v || !v.dataset.loaded) return;
     const next = pickSrc(v);
-    if (!next || v.src.endsWith(next)) return;
+    if (!next || (v.currentSrc || v.src).endsWith(next)) return;
     const t = v.currentTime;
     const wasPlaying = !v.paused;
     v.poster = pickPoster(v);
@@ -43,8 +43,9 @@ export function hero() {
   addEventListener('resize', () => { clearTimeout(cutTimer); cutTimer = setTimeout(syncCut, 200); });
   const load = (v) => {
     if (!v || v.dataset.loaded) return;
+    const inline = !!v.querySelector('source');
     const src = pickSrc(v);
-    if (!src) return;
+    if (!src && !inline) return;
     v.dataset.loaded = '1';
     /* "loop from": the opening reveal plays once, then the clip loops on its steady part.
        Scenes after the first skip straight to that part so their copy is legible at once. */
@@ -63,8 +64,10 @@ export function hero() {
     v.setAttribute('playsinline', '');
     v.setAttribute('webkit-playsinline', '');
     v.poster = pickPoster(v);
-    v.src = src;
-    v.preload = 'auto';
+    if (!inline) {
+      v.src = src;
+      v.preload = 'auto';
+    }
     v.addEventListener('playing', () => v.closest('.ej-scene').classList.add('has-video'), { once: true });
     /* buffer the next film while this one plays, so it is ready before you scroll to it */
     const next = videos[videos.indexOf(v) + 1];
@@ -79,7 +82,10 @@ export function hero() {
       };
       v.addEventListener('canplaythrough', chain, { once: true });
       v.addEventListener('playing', () => setTimeout(chain, 1200), { once: true });
+      /* the opener may have started on its own before this script ran */
+      if (v.readyState >= 4 || !v.paused) setTimeout(chain, 1200);
     }
+    if (!v.paused) v.closest('.ej-scene').classList.add('has-video');
   };
   const play = (v) => {
     if (!v || reduced) return;
@@ -231,7 +237,7 @@ export function hero() {
       load(first);
       const probe = first.play();
       if (probe) {
-        probe.then(() => { first.pause(); first.currentTime = 0; }, (err) => {
+        probe.then(() => {}, (err) => {
           if (!err || err.name !== 'NotAllowedError') return;
           first.dataset.blocked = '1';
           armUnlock();
