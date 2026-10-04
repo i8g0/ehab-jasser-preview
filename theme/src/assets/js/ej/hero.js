@@ -36,6 +36,8 @@ export function hero() {
     v.src = next;
     v.addEventListener('loadedmetadata', () => { v.currentTime = t; if (wasPlaying) { const p = v.play(); if (p) p.catch(() => {}); } }, { once: true });
   });
+  /* every film shows its poster right away (an empty <video> paints black on iPhone) */
+  videos.forEach((v) => { if (v) v.poster = pickPoster(v); });
   portrait.addEventListener('change', syncCut);
   let cutTimer;
   addEventListener('resize', () => { clearTimeout(cutTimer); cutTimer = setTimeout(syncCut, 200); });
@@ -64,6 +66,20 @@ export function hero() {
     v.src = src;
     v.preload = 'auto';
     v.addEventListener('playing', () => v.closest('.ej-scene').classList.add('has-video'), { once: true });
+    /* buffer the next film while this one plays, so it is ready before you scroll to it */
+    const next = videos[videos.indexOf(v) + 1];
+    if (next) {
+      /* iPhone ignores preload: a muted play-then-pause makes it actually fetch and decode the opening */
+      const chain = () => {
+        if (next.dataset.primed || reduced) return;
+        next.dataset.primed = '1';
+        load(next);
+        const p = next.play();
+        if (p) p.then(() => { if (!onStage(next)) next.pause(); }, () => {});
+      };
+      v.addEventListener('canplaythrough', chain, { once: true });
+      v.addEventListener('playing', () => setTimeout(chain, 1200), { once: true });
+    }
   };
   const play = (v) => {
     if (!v || reduced) return;
@@ -75,7 +91,7 @@ export function hero() {
   };
   const onStage = (v) => {
     const r = v.closest('.ej-scene').getBoundingClientRect();
-    return r.bottom > -innerHeight * 0.05 && r.top < innerHeight * 1.05;
+    return r.bottom > innerHeight * 0.02 && r.top < innerHeight * 0.98;
   };
   /* Phones in Low Power Mode / data saver refuse every film until the visitor touches the page.
      The first touch, tap or key press "primes" all three films at once (play, then pause the ones
@@ -136,8 +152,9 @@ export function hero() {
       const r = top / vh; /* 1 = waiting below, 0 = on stage, -1 = gone above */
       const dist = Math.abs(r);
       if (dist < bestDist) { bestDist = dist; best = i; }
-      if (r > 1.05 || r < -1.05) { pause(videos[i]); return; }
-      play(videos[i]);
+      /* only films actually on screen decode; the rest wait, already buffered */
+      if (r >= 0.98 || r <= -0.98) pause(videos[i]); else play(videos[i]);
+      if (r > 1.05 || r < -1.05) return;
       if (reduced) return;
       const { media, shade: shadeEl, copy } = parts[i];
       let y = 0;
