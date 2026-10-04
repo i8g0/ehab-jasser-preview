@@ -226,6 +226,18 @@ export function hero() {
   frame();
 
   dust($('[data-ej-dust]', root));
+
+  /* ?debug-video shows each film's state on screen, to diagnose a phone without a cable */
+  if (/debug-video/.test(location.search)) {
+    const box = document.createElement('pre');
+    box.style.cssText = 'position:fixed;z-index:9999;left:8px;bottom:8px;margin:0;padding:8px;font:11px/1.4 monospace;color:#0f0;background:rgba(0,0,0,.8);direction:ltr;text-align:left;pointer-events:none';
+    document.body.appendChild(box);
+    setInterval(() => {
+      box.textContent = videos.map((v, i) => (v
+        ? `${i + 1} ${(v.currentSrc || '-').split('/').pop()} rs=${v.readyState} ns=${v.networkState} err=${v.error ? v.error.code : 0} ${v.paused ? 'paused' : 'playing'} t=${v.currentTime.toFixed(1)}${v.dataset.blocked ? ' BLOCKED' : ''}`
+        : `${i + 1} no video`)).join(String.fromCharCode(10));
+    }, 500);
+  }
 }
 
 function dust(canvas) {
