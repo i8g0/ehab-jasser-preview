@@ -25,7 +25,16 @@ export function intro() {
     }, 900);
   };
   requestAnimationFrame(() => el.classList.add('is-playing'));
-  const timer = setTimeout(done, 2300);
+  let timer = setTimeout(done, 2300);
+  /* The phone refuses to start the films on its own (Low Power Mode, data saver): instead of lifting,
+     the curtain offers "Enter". That tap is the gesture the phone needs, exactly the moment Patek's
+     consent tap provides, and every film then plays as you scroll. */
+  document.addEventListener('ej:autoplay-blocked', () => {
+    if (el.classList.contains('is-leaving')) return;
+    clearTimeout(timer);
+    el.classList.add('needs-enter');
+    setTimeout(() => el.querySelector('.ej-intro__enter')?.focus({ preventScroll: true }), 50);
+  }, { once: true });
   el.addEventListener('click', () => { clearTimeout(timer); done(); }, { once: true });
 }
 

@@ -59,5 +59,10 @@
         </nav>
     {% endif %}
 
+    {# shown only when the phone blocks autoplay (Low Power Mode): any touch starts the films #}
+    <button type="button" class="ej-scenes__tap" aria-label="{{ trans('ej.tap_to_play') }}">
+        <i aria-hidden="true"></i><span>{{ trans('ej.tap_to_play') }}</span>
+    </button>
+
     <span class="ej-hero__scroll ej-latin" aria-hidden="true">{{ trans('ej.scroll') }}<i></i></span>
 </section>

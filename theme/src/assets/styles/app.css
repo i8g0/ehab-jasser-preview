@@ -397,8 +397,7 @@ body[data-hero-tone="dark"] .ej-header:not(.is-solid) .ej-header__logo img { fil
 .ej-scene__drift { position: absolute; inset: -3%; transform: translate3d(var(--dx, 0), var(--dy, 0), 0); }
 .ej-scene__img,
 .ej-scene__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.ej-scene__video { opacity: 0; transition: opacity 1.2s ease; }
-.ej-scene.has-video .ej-scene__video { opacity: 1; }
+/* the film is never hidden (Safari refuses to start a video it considers invisible); its poster covers the wait */
 .ej-scene__img { transition: transform 9s cubic-bezier(.2, .6, .2, 1); }
 .ej-scene.is-current .ej-scene__img { transform: scale(1.06); }
 
@@ -1204,3 +1203,58 @@ body:has(.ej-scenes:not(.is-past)) .ej-pill { transform: translateY(160%); opaci
   .ej-scene__media { will-change: transform; }
 }
 @keyframes ej-sweep-move { 0% { opacity: .55; transform: translateX(-140%); } 100% { opacity: .55; transform: translateX(240%); } }
+
+/* "tap to play" — only when the phone blocks autoplay */
+.ej-scenes__tap {
+  position: fixed;
+  z-index: 45;
+  left: 50%;
+  bottom: max(22px, env(safe-area-inset-bottom));
+  display: none;
+  align-items: center;
+  gap: 10px;
+  height: 44px;
+  padding: 0 18px;
+  border: 1px solid rgba(217, 188, 151, .55);
+  border-radius: 999px;
+  background: rgba(23, 18, 14, .72);
+  color: var(--cream);
+  font-size: 13px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transform: translateX(-50%);
+  animation: ej-rise .6s var(--ease) both;
+}
+.ej-scenes__tap i { width: 0; height: 0; border-block: 6px solid transparent; border-inline-end: 9px solid var(--gold-light); }
+[dir="ltr"] .ej-scenes__tap i { border-inline-end: 0; border-inline-start: 9px solid var(--gold-light); }
+.ej-scenes.needs-tap:not(.is-past) .ej-scenes__tap { display: inline-flex; }
+
+/* intro "Enter" — appears only when the phone needs a tap before films can play */
+.ej-intro__enter {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-top: 14px;
+  min-width: 170px;
+  padding: 14px 34px;
+  border: 1px solid rgba(217, 188, 151, .6);
+  background: transparent;
+  color: var(--cream);
+  font-family: var(--f-display);
+  font-size: 22px;
+  line-height: 1.2;
+  animation: ej-up .9s var(--ease) both;
+}
+.ej-intro__enter small { font-size: 9px; letter-spacing: .5em; color: var(--gold-light); }
+.ej-intro.needs-enter .ej-intro__enter { display: inline-flex; }
+.ej-intro.needs-enter .ej-intro__enter::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border: 1px solid var(--gold-light);
+  animation: ej-enter-pulse 2.4s var(--ease) infinite;
+  pointer-events: none;
+}
+.ej-intro__enter { position: relative; }
+@keyframes ej-enter-pulse { 0% { opacity: .8; transform: scale(1); } 70%, 100% { opacity: 0; transform: scale(1.18, 1.5); } }

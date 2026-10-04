@@ -71,19 +71,37 @@ export function hero() {
     /* wait for the opening curtain, so the first film is seen from its first frame */
     if (!v.paused || !root.classList.contains('is-ready') || v.dataset.blocked) return;
     const p = v.play();
-    if (p) p.catch(() => { v.dataset.blocked = '1'; armUnlock(); });
+    if (p) p.catch((err) => { if (err && err.name === 'NotAllowedError') { v.dataset.blocked = '1'; armUnlock(); } });
   };
-  /* Low Power Mode / data saver on phones refuse autoplay: the first touch starts the films instead */
+  const onStage = (v) => {
+    const r = v.closest('.ej-scene').getBoundingClientRect();
+    return r.bottom > -innerHeight * 0.05 && r.top < innerHeight * 1.05;
+  };
+  /* Phones in Low Power Mode / data saver refuse every film until the visitor touches the page.
+     The first touch, tap or key press "primes" all three films at once (play, then pause the ones
+     off screen), so from then on they start on their own as you scroll, like on Patek. */
+  const GESTURES = ['touchstart', 'touchend', 'pointerdown', 'click', 'keydown'];
   let armed = false;
+  const unlock = () => {
+    const tries = videos.filter(Boolean).map((v) => {
+      load(v);
+      delete v.dataset.blocked;
+      const p = v.play();
+      return Promise.resolve(p).then(() => { if (!onStage(v)) v.pause(); return true; }, () => false);
+    });
+    Promise.all(tries).then((ok) => {
+      if (!ok.some(Boolean)) return; /* not a real gesture for this browser: keep listening */
+      GESTURES.forEach((t) => removeEventListener(t, unlock, true));
+      armed = false;
+      root.classList.remove('needs-tap');
+      frame();
+    });
+  };
   const armUnlock = () => {
+    root.classList.add('needs-tap');
     if (armed) return;
     armed = true;
-    const unlock = () => {
-      ['touchend', 'click', 'keydown'].forEach((t) => removeEventListener(t, unlock, true));
-      videos.forEach((v) => { if (v) delete v.dataset.blocked; });
-      frame();
-    };
-    ['touchend', 'click', 'keydown'].forEach((t) => addEventListener(t, unlock, { capture: true, passive: true }));
+    GESTURES.forEach((t) => addEventListener(t, unlock, { capture: true, passive: true }));
   };
   /* a page opened in a background tab refuses playback too: retry when it comes to the front */
   document.addEventListener('visibilitychange', () => {
@@ -188,8 +206,23 @@ export function hero() {
     root.classList.add('is-ready');
     frame();
   };
-  if (document.documentElement.classList.contains('ej-intro-on')) document.addEventListener('ej:intro-done', start, { once: true });
-  else setTimeout(start, 30);
+  if (document.documentElement.classList.contains('ej-intro-on')) {
+    document.addEventListener('ej:intro-done', start, { once: true });
+    /* behind the curtain: may this phone start films on its own? */
+    const first = videos.find(Boolean);
+    if (first && !reduced) {
+      load(first);
+      const probe = first.play();
+      if (probe) {
+        probe.then(() => { first.pause(); first.currentTime = 0; }, (err) => {
+          if (!err || err.name !== 'NotAllowedError') return;
+          first.dataset.blocked = '1';
+          armUnlock();
+          document.dispatchEvent(new Event('ej:autoplay-blocked'));
+        });
+      }
+    }
+  } else setTimeout(start, 30);
   frame();
 
   dust($('[data-ej-dust]', root));

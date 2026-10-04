@@ -1,8 +1,13 @@
-{# Opening curtain: the logo is revealed by a sweep of gold light, then the curtain lifts. Once per session (intro.js). #}
-<div class="ej-intro" data-ej-intro aria-hidden="true">
-    <div class="ej-intro__mark">
+{# Opening curtain: the logo is revealed by a sweep of gold light, then the curtain lifts. Once per session (chrome.js).
+   When the phone blocks autoplay, it waits for "Enter" — that tap lets every film play. #}
+<div class="ej-intro" data-ej-intro>
+    <div class="ej-intro__mark" aria-hidden="true">
         <img src="{{ store.logo }}" alt="" width="180" height="180">
         <span class="ej-intro__shine"></span>
     </div>
-    <span class="ej-intro__line ej-latin">A POEM WITHOUT LETTERS</span>
+    <span class="ej-intro__line ej-latin" aria-hidden="true">A POEM WITHOUT LETTERS</span>
+    <button type="button" class="ej-intro__enter">
+        <span>{{ trans('ej.enter') }}</span>
+        <small class="ej-latin">ENTER</small>
+    </button>
 </div>
