@@ -1,0 +1,13 @@
+{
+  "name": "ehab-jasser-salla-theme",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node preview/build.mjs",
+    "dev": "node preview/build.mjs --watch"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0",
+    "twig": "^1.17.1"
+  }
+}

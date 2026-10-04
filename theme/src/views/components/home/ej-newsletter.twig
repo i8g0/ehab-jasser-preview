@@ -1,0 +1,19 @@
+{#
+| component.eyebrow, title, text, button | string |
+| component.url                           | ?string | where sign-ups go (WhatsApp, form page); without it the form only thanks the visitor |
+#}
+<section class="ej-letter" component-id="{{ componentId }}">
+    <div class="ej-container ej-letter__grid">
+        <div>
+            {% if component.eyebrow %}<span class="ej-eyebrow" data-reveal>{{ component.eyebrow }}</span>{% endif %}
+            <h2 class="ej-letter__title" data-split>{{ component.title }}</h2>
+            <p class="ej-letter__text" data-reveal>{{ component.text }}</p>
+        </div>
+        <form class="ej-letter__form" data-ej-letter data-url="{{ component.url }}" data-reveal>
+            <label class="sr-only" for="ej-letter-{{ position }}">{{ component.text }}</label>
+            <input id="ej-letter-{{ position }}" type="tel" inputmode="tel" autocomplete="tel" placeholder="05xxxxxxxx" required>
+            <button class="ej-btn ej-btn--gold" type="submit">{{ component.button }}</button>
+            <p class="ej-letter__done" data-ej-letter-done hidden>✦ {{ trans('ej.letter_thanks') }}</p>
+        </form>
+    </div>
+</section>

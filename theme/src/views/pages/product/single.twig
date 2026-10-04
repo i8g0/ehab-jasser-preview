@@ -1,0 +1,136 @@
+{#
+  Product page. Variables: see Raed's pages/product/single.twig (product.*).
+  - Notes pyramid: write lines in the product description that start with "المقدمة:", "القلب:", "القاعدة:"
+    (notes, then " — " and a sentence). product.js turns them into the pyramid.
+  - Colour mood: add a product tag "tone-amber", "tone-noir", "tone-rose", "tone-ember" or "tone-pearl".
+#}
+{% extends "layouts.master" %}
+{% import 'components.ej.macros' as ej %}
+
+{% set tone = 'amber' %}
+{% for t in product.tags %}
+    {% if t.name starts with 'tone-' %}{% set tone = t.name|replace({'tone-': ''}) %}{% endif %}
+{% endfor %}
+{% set gallery = product.images|length ? product.images : [product.image] %}
+
+{% block content %}
+<div class="ej-product" data-ej-product data-tone="{{ tone }}">
+    <div class="ej-container">
+        <nav class="ej-crumbs" aria-label="breadcrumb">
+            <a href="{{ store.url }}">{{ trans('ej.home') }}</a>
+            {% if product.category %}<span aria-hidden="true">/</span><a href="{{ product.category.url }}">{{ product.category.name }}</a>{% endif %}
+            <span aria-hidden="true">/</span><span aria-current="page">{{ product.name }}</span>
+        </nav>
+
+        <div class="ej-product__grid">
+            <div class="ej-gallery" data-ej-gallery>
+                <div class="ej-gallery__main ej-snap" data-ej-gallery-track>
+                    {% for img in gallery %}
+                        <figure class="ej-gallery__slide{{ loop.first ? ' is-product' : '' }}">
+                            <img src="{{ img.url }}" alt="{{ img.alt ?: product.name }}" {{ loop.first ? 'fetchpriority="high" data-ej-fly-src' : 'loading="lazy"' }}>
+                        </figure>
+                    {% endfor %}
+                </div>
+                {% if gallery|length > 1 %}
+                    <span class="ej-gallery__count ej-latin" data-ej-gallery-count>01 / {{ '%02d'|format(gallery|length) }}</span>
+                    <div class="ej-gallery__thumbs">
+                        {% for img in gallery %}
+                            <button type="button" class="ej-gallery__thumb{{ loop.first ? ' is-active' : '' }}" data-ej-thumb="{{ loop.index0 }}" aria-label="{{ loop.index }}">
+                                <img src="{{ img.url }}" alt="" loading="lazy">
+                            </button>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="ej-buy">
+                <span class="ej-eyebrow" data-reveal>{{ product.category ? product.category.name : store.name }}{% if product.subtitle %} · {{ product.subtitle }}{% endif %}</span>
+                <h1 class="ej-buy__name" data-split>{{ product.name }}</h1>
+                {% if product.promotion_title %}<span class="ej-buy__promo">{{ product.promotion_title }}</span>{% endif %}
+
+                {% if product.rating and product.rating.count %}
+                    <a class="ej-buy__rating" href="#reviews">
+                        <span class="ej-stars" style="--stars: {{ product.rating.stars }}" aria-hidden="true">★★★★★</span>
+                        <span>{{ product.rating.count }} {{ trans('ej.reviews') }}</span>
+                    </a>
+                {% endif %}
+
+                <div class="ej-buy__price">
+                    {% if product.is_on_sale %}
+                        <strong>{{ product.sale_price|money }}</strong><del>{{ product.regular_price|money }}</del>
+                    {% else %}
+                        <strong>{{ product.price|money }}</strong>
+                    {% endif %}
+                    <small>{{ trans('ej.tax_included') }}</small>
+                </div>
+                <salla-installment price="{{ product.price }}"></salla-installment>
+
+                {% if product.is_available %}
+                    <div class="ej-buy__row">
+                        <div class="ej-qty" data-ej-qty>
+                            <button type="button" data-step="1" aria-label="{{ trans('ej.increase') }}">+</button>
+                            <input type="number" value="1" min="1" max="{{ product.max_quantity ?: 10 }}" aria-label="{{ trans('ej.quantity') }}" data-ej-qty-input>
+                            <button type="button" data-step="-1" aria-label="{{ trans('ej.decrease') }}">−</button>
+                        </div>
+                        <button type="button" class="ej-btn ej-btn--ink ej-btn--block ej-buy__add" {{ ej.add_attrs(product) }} data-ej-with-qty data-magnetic>
+                            {{ trans('ej.add_to_cart') }} · {{ product.price|money }}
+                        </button>
+                    </div>
+                {% else %}
+                    <p class="ej-buy__out">{{ trans('ej.sold_out') }}</p>
+                {% endif %}
+
+                <ul class="ej-buy__trust">
+                    <li>{{ ej.icon('shield') }}{{ trans('ej.secure_payment') }}</li>
+                    <li>{{ ej.icon('truck') }}{{ trans('ej.cod') }}</li>
+                    <li>{{ ej.icon('gift') }}{{ trans('ej.exchange_policy') }}</li>
+                </ul>
+
+                <div class="ej-desc" data-ej-description>{{ product.description|raw }}</div>
+            </div>
+        </div>
+    </div>
+
+    <section class="ej-notes" data-ej-notes hidden>
+        <div class="ej-container ej-notes__grid">
+            <div class="ej-head ej-head--start">
+                <span class="ej-eyebrow" data-reveal>{{ trans('ej.the_notes') }}</span>
+                <h2 class="ej-head__title" data-split>{{ trans('ej.pyramid') }}</h2>
+            </div>
+            <div class="ej-pyramid" data-ej-pyramid></div>
+        </div>
+    </section>
+
+    <section class="ej-product__reviews" id="reviews">
+        <div class="ej-container">
+            <div class="ej-head ej-head--start">
+                <span class="ej-eyebrow" data-reveal>REVIEWS</span>
+                <h2 class="ej-head__title" data-split>{{ trans('ej.reviews') }}</h2>
+            </div>
+            <salla-comments item-id="{{ product.id }}" type="product"></salla-comments>
+        </div>
+    </section>
+
+    <section class="ej-related">
+        <div class="ej-container">
+            <div class="ej-head ej-head--start">
+                <span class="ej-eyebrow" data-reveal>YOU MAY ALSO LIKE</span>
+                <h2 class="ej-head__title" data-split>{{ trans('ej.you_may_like') }}</h2>
+            </div>
+        </div>
+        <salla-products-slider source="related" source-value="{{ product.id }}" class="ej-related__slider"></salla-products-slider>
+    </section>
+
+    {% if product.is_available %}
+        <div class="ej-buybar" data-ej-buybar aria-hidden="true">
+            <span class="ej-buybar__img"><img src="{{ product.image.url }}" alt=""></span>
+            <span class="ej-buybar__txt"><strong>{{ product.name }}</strong><small>{{ product.price|money }}</small></span>
+            <button type="button" class="ej-btn ej-btn--gold" {{ ej.add_attrs(product) }} data-ej-with-qty tabindex="-1">{{ trans('ej.add_to_cart') }}</button>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script defer src="{{ 'product.js' | asset }}"></script>
+{% endblock %}

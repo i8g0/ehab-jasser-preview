@@ -1,0 +1,34 @@
+{#
+| component.eyebrow, title, accent, description, all_label | string |
+| component.products                                        | Product[] — filter tabs come from each product's category |
+#}
+{% import 'components.ej.macros' as ej %}
+{% set cats = [] %}
+{% for p in component.products %}
+    {% if p.category and p.category.name and p.category.name not in cats %}
+        {% set cats = cats|merge([p.category.name]) %}
+    {% endif %}
+{% endfor %}
+<section class="ej-boutique" id="shop" component-id="{{ componentId }}" data-ej-boutique>
+    <div class="ej-container">
+        {{ ej.head(component.eyebrow, component.title, component.accent, component.description, 'center') }}
+    </div>
+    {% if cats|length > 1 %}
+        <div class="ej-tabs" role="tablist" aria-label="{{ component.title }}">
+            <div class="ej-tabs__track ej-snap" data-ej-tabs>
+                <button type="button" role="tab" class="ej-tab is-active" aria-selected="true" data-filter="*">{{ component.all_label ?: 'الكل' }}</button>
+                {% for c in cats %}
+                    <button type="button" role="tab" class="ej-tab" aria-selected="false" data-filter="{{ c }}">{{ c }}</button>
+                {% endfor %}
+                <span class="ej-tabs__ink" data-ej-ink aria-hidden="true"></span>
+            </div>
+        </div>
+    {% endif %}
+    <div class="ej-container">
+        <div class="ej-grid" data-ej-grid>
+            {% for p in component.products %}
+                {% include 'components.product.ej-card' with {product: p} %}
+            {% endfor %}
+        </div>
+    </div>
+</section>

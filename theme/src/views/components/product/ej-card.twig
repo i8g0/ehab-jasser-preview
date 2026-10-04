@@ -1,0 +1,36 @@
+{#
+  Product card. Include with: {% include 'components.product.ej-card' with {product: p, mark: 'E', variant: 'tall'} %}
+  | product  | Product | Salla product                                   |
+  | mark     | ?string | big watermark letter or number behind the bottle |
+  | variant  | ?string | '' (grid), 'tall' (carousels), 'night' (dark sections) |
+#}
+{% import 'components.ej.macros' as ej %}
+<article class="ej-card {{ variant ? 'ej-card--' ~ variant : '' }}" data-ej-card data-category="{{ product.category.name }}" data-reveal>
+    <a class="ej-card__stage" href="{{ product.url }}" data-tilt aria-label="{{ product.name }}">
+        <span class="ej-card__frame" aria-hidden="true"></span>
+        {% if mark %}<span class="ej-card__mark ej-latin" aria-hidden="true">{{ mark }}</span>{% endif %}
+        {% if product.promotion_title %}<span class="ej-card__badge">{{ product.promotion_title }}</span>{% endif %}
+        <img class="ej-card__img" src="{{ product.image.url }}" alt="{{ product.image.alt ?: product.name }}" loading="lazy" data-ej-fly-src>
+        <span class="ej-card__floor" aria-hidden="true"></span>
+        <span class="ej-card__sheen" aria-hidden="true"></span>
+    </a>
+    {% if product.is_available %}
+        <button class="ej-card__add" type="button" {{ ej.add_attrs(product) }} aria-label="{{ trans('ej.add_to_cart') }}: {{ product.name }}">
+            {{ ej.icon('plus') }}
+        </button>
+    {% endif %}
+    <a class="ej-card__meta" href="{{ product.url }}" tabindex="-1">
+        {% if product.subtitle %}<span class="ej-card__latin ej-latin">{{ product.subtitle }}</span>{% endif %}
+        <span class="ej-card__name">{{ product.name }}</span>
+        <span class="ej-card__rule" aria-hidden="true"></span>
+        <span class="ej-card__price">
+            {% if product.is_on_sale %}
+                <ins>{{ product.sale_price|money }}</ins> <del>{{ product.regular_price|money }}</del>
+            {% elseif not product.is_available %}
+                {{ trans('ej.sold_out') }}
+            {% else %}
+                {{ product.price|money }}
+            {% endif %}
+        </span>
+    </a>
+</article>

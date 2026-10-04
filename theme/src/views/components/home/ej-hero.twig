@@ -1,0 +1,50 @@
+{#
+| Variable                 | Type     | Description                                  |
+|--------------------------|----------|----------------------------------------------|
+| component.slides         | object[] | image, tone (light|dark), eyebrow, title, accent, button, url |
+| component.autoplay       | bool     |                                              |
+| position                 | int      |                                              |
+#}
+{% set numerals = ['٠١', '٠٢', '٠٣', '٠٤', '٠٥'] %}
+<section class="ej-hero" component-id="{{ componentId }}" data-ej-hero data-autoplay="{{ component.autoplay ? 1 : 0 }}" aria-roledescription="carousel" aria-label="{{ store.name }}">
+    <div class="ej-hero__slides">
+        {% for slide in component.slides %}
+            {% set tone %}{% include 'components.ej.pick' with {v: slide.tone} %}{% endset %}
+            {% set tone = tone|trim ?: 'dark' %}
+            <article class="ej-hero__slide ej-hero__slide--{{ tone }}{{ loop.first ? ' is-active' : '' }}" data-tone="{{ tone }}" aria-hidden="{{ loop.first ? 'false' : 'true' }}">
+                <div class="ej-hero__media" data-parallax="0.18">
+                    {% if slide.image %}
+                        <img src="{{ slide.image }}" alt="{{ slide.title }} {{ slide.accent }}" {{ loop.first ? 'fetchpriority="high"' : 'loading="lazy"' }}>
+                    {% endif %}
+                </div>
+                <div class="ej-hero__copy">
+                    {% if slide.eyebrow %}<span class="ej-eyebrow ej-hero__eyebrow">{{ slide.eyebrow }}</span>{% endif %}
+                    {% if loop.first %}<h1 class="ej-hero__title">{% else %}<h2 class="ej-hero__title">{% endif %}
+                        <span class="ej-hero__line" data-words>{{ slide.title }}</span>
+                        {% if slide.accent %}<span class="ej-hero__line ej-hero__line--accent" data-words>{{ slide.accent }}</span>{% endif %}
+                    {% if loop.first %}</h1>{% else %}</h2>{% endif %}
+                    {% if slide.button %}
+                        <a class="ej-btn {{ tone == 'light' ? 'ej-btn--ink' : 'ej-btn--glass' }} ej-hero__cta" href="{{ slide.url ?: '#shop' }}" data-magnetic>
+                            <span>{{ slide.button }}</span>
+                        </a>
+                    {% endif %}
+                </div>
+            </article>
+        {% endfor %}
+    </div>
+
+    <canvas class="ej-hero__dust" data-ej-dust aria-hidden="true"></canvas>
+
+    {% if component.slides|length > 1 %}
+        <div class="ej-hero__tabs" role="tablist">
+            {% for slide in component.slides %}
+                <button type="button" role="tab" class="ej-hero__tab{{ loop.first ? ' is-active' : '' }}" data-ej-slide="{{ loop.index0 }}" aria-selected="{{ loop.first ? 'true' : 'false' }}" aria-label="{{ slide.title }}">
+                    <span class="ej-hero__track"><span class="ej-hero__fill"></span></span>
+                    <span class="ej-hero__num ej-latin">{{ numerals[loop.index0] ?? loop.index }}</span>
+                </button>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <span class="ej-hero__scroll ej-latin" aria-hidden="true">{{ trans('ej.scroll') }}<i></i></span>
+</section>

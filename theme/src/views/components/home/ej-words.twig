@@ -1,0 +1,20 @@
+{#
+| component.eyebrow, title | string |
+| component.reviews        | object[] | text, name, city |
+#}
+{% import 'components.ej.macros' as ej %}
+<section class="ej-words" component-id="{{ componentId }}">
+    <div class="ej-container">
+        {{ ej.head(component.eyebrow, component.title, null, null, 'center') }}
+    </div>
+    <div class="ej-words__track ej-snap" data-ej-drag>
+        {% for r in component.reviews %}
+            <figure class="ej-quote" data-reveal style="--i: {{ loop.index0 }}">
+                <span class="ej-quote__mark ej-latin" aria-hidden="true">“</span>
+                <blockquote>{{ r.text }}</blockquote>
+                <span class="ej-quote__rule" aria-hidden="true"></span>
+                <figcaption><strong>{{ r.name }}</strong><span>{{ r.city }}</span></figcaption>
+            </figure>
+        {% endfor %}
+    </div>
+</section>

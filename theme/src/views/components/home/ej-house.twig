@@ -1,0 +1,24 @@
+{#
+| component.image, eyebrow, title, accent, text, signature, button, url | string |
+#}
+<section class="ej-house" component-id="{{ componentId }}">
+    <img class="ej-house__watermark" src="{{ store.logo }}" alt="" aria-hidden="true" loading="lazy">
+    <div class="ej-container ej-house__grid">
+        {% if component.image %}
+            <div class="ej-house__arch" data-arch-reveal>
+                <img src="{{ component.image }}" alt="{{ component.title }} {{ component.accent }}" loading="lazy" data-parallax="0.08">
+            </div>
+        {% endif %}
+        <div class="ej-house__copy">
+            <img class="ej-house__logo" src="{{ store.logo }}" alt="" width="70" height="70" loading="lazy" data-reveal>
+            {% if component.eyebrow %}<span class="ej-eyebrow" data-reveal>{{ component.eyebrow }}</span>{% endif %}
+            <h2 class="ej-house__title" data-split>{{ component.title }}<br><span class="ej-accent">{{ component.accent }}</span></h2>
+            <span class="ej-ornament" aria-hidden="true" data-reveal><i></i>✦<i></i></span>
+            <p class="ej-house__text" data-reveal>{{ component.text }}</p>
+            {% if component.signature %}<span class="ej-house__sign ej-latin" data-sign>{{ component.signature }}</span>{% endif %}
+            {% if component.button %}
+                <a class="ej-btn ej-btn--line-light" href="{{ component.url ?: '#' }}" data-reveal data-magnetic>{{ component.button }}</a>
+            {% endif %}
+        </div>
+    </div>
+</section>

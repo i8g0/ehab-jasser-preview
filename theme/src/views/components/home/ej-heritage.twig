@@ -1,0 +1,28 @@
+{#
+| component.image, year, title, caption | string |
+| component.product                     | Product[] (first is used) |
+The banner image is never cropped: it often carries lettering (e.g. "A Century · Of Legacy · In a Bottle").
+#}
+{% import 'components.ej.macros' as ej %}
+{% set p = component.product|first %}
+<section class="ej-heritage" component-id="{{ componentId }}">
+    {% if component.image %}
+        <figure class="ej-heritage__media" data-mask-reveal>
+            <img src="{{ component.image }}" alt="{{ component.year }} — {{ component.title }}" loading="lazy" data-ej-fly-src>
+            <span class="ej-heritage__glint" aria-hidden="true"></span>
+        </figure>
+    {% endif %}
+    <div class="ej-container ej-heritage__body">
+        <span class="ej-heritage__year ej-latin" data-count="{{ component.year }}">{{ component.year }}</span>
+        <span class="ej-heritage__sep" aria-hidden="true"></span>
+        <div class="ej-heritage__text" data-reveal>
+            <h2>{{ component.title }}</h2>
+            {% if component.caption %}<p>{{ component.caption }}</p>{% endif %}
+        </div>
+        {% if p and p.is_available %}
+            <button class="ej-btn ej-btn--gold ej-heritage__cta" type="button" {{ ej.add_attrs(p) }} data-magnetic>
+                {{ trans('ej.add_to_cart') }} · {{ p.price|money }}
+            </button>
+        {% endif %}
+    </div>
+</section>

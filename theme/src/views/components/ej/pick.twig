@@ -1,0 +1,10 @@
+{#- Normalises a Salla dropdown value (string, {value}, [{value}] or [string]) to a plain string. Usage:
+    {% set tone = include('components.ej.pick', {v: slide.tone})|trim %} -#}
+{%- if v.value is defined and v.value -%}
+    {{- v.value -}}
+{%- elseif v is iterable -%}
+    {%- set f = v|first -%}
+    {{- f.value is defined ? f.value : f -}}
+{%- else -%}
+    {{- v -}}
+{%- endif -%}

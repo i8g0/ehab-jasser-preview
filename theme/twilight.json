@@ -1,0 +1,1266 @@
+{
+  "name": {
+    "ar": "إيهاب الجاسر",
+    "en": "Ehab Jasser"
+  },
+  "repository": "https://github.com/i8g0/ehab-jasser-preview",
+  "author_email": "",
+  "support_url": "",
+  "description": {
+    "ar": "ثيم فاخر لعطور إيهاب الجاسر",
+    "en": "A luxury perfume theme for Ehab Jasser"
+  },
+  "features": [
+    "breadcrumb",
+    "fonts",
+    "color"
+  ],
+  "settings": [
+    {
+      "type": "static",
+      "format": "title",
+      "id": "ej-top",
+      "value": "الشريط العلوي"
+    },
+    {
+      "type": "string",
+      "format": "text",
+      "id": "announcement_1",
+      "label": "رسالة ١",
+      "value": "قسّطها على ٤ دفعات مع تمارا",
+      "multilanguage": true,
+      "required": false,
+      "icon": "sicon-format-text-alt"
+    },
+    {
+      "type": "string",
+      "format": "text",
+      "id": "announcement_2",
+      "label": "رسالة ٢",
+      "value": "ادفع بأبل باي أو مدى",
+      "multilanguage": true,
+      "required": false,
+      "icon": "sicon-format-text-alt"
+    },
+    {
+      "type": "string",
+      "format": "text",
+      "id": "announcement_3",
+      "label": "رسالة ٣",
+      "value": "الدفع عند الاستلام متاح",
+      "multilanguage": true,
+      "required": false,
+      "icon": "sicon-format-text-alt"
+    },
+    {
+      "type": "static",
+      "format": "title",
+      "id": "ej-motion",
+      "value": "الحركة والتجربة"
+    },
+    {
+      "type": "boolean",
+      "format": "switch",
+      "id": "enable_intro",
+      "label": "شاشة افتتاحية بالشعار (مرة واحدة لكل زيارة)",
+      "value": true,
+      "selected": true,
+      "required": false,
+      "icon": "sicon-toggle-off",
+      "description": null
+    },
+    {
+      "type": "boolean",
+      "format": "switch",
+      "id": "enable_sound",
+      "label": "نغمة خفيفة عند الإضافة للسلة",
+      "value": true,
+      "selected": true,
+      "required": false,
+      "icon": "sicon-toggle-off",
+      "description": null
+    },
+    {
+      "type": "boolean",
+      "format": "switch",
+      "id": "enable_cursor",
+      "label": "توهج ذهبي يتبع المؤشر (كمبيوتر فقط)",
+      "value": true,
+      "selected": true,
+      "required": false,
+      "icon": "sicon-toggle-off",
+      "description": null
+    },
+    {
+      "type": "static",
+      "format": "title",
+      "id": "ej-footer",
+      "value": "الفوتر"
+    },
+    {
+      "type": "string",
+      "format": "textarea",
+      "id": "footer_about",
+      "label": "نبذة",
+      "value": "علامة تجارية صنعت بعناية، تهتم بكل ما هو مختص في عالم الأناقة والجمال.",
+      "multilanguage": true,
+      "required": false,
+      "icon": "sicon-typography"
+    },
+    {
+      "type": "string",
+      "format": "text",
+      "id": "payment_line",
+      "label": "وسائل الدفع",
+      "value": "mada · Apple Pay · VISA · tamara · COD",
+      "multilanguage": true,
+      "required": false,
+      "icon": "sicon-format-text-alt"
+    }
+  ],
+  "components": [
+    {
+      "key": "07a98157-d1ad-4864-ac9d-9c6779b73786",
+      "title": {
+        "ar": "الواجهة السينمائية",
+        "en": "Cinematic hero"
+      },
+      "icon": "sicon-image-carousel",
+      "path": "home.ej-hero",
+      "fields": [
+        {
+          "type": "static",
+          "format": "description",
+          "id": "note-be2c7bac",
+          "value": "<div>شرائح تتبدّل تلقائيًا مع حركة بطيئة للصورة. الصورة الأفقية المناسبة 1600×1000 بكسل.</div>"
+        },
+        {
+          "type": "collection",
+          "format": "collection",
+          "id": "slides",
+          "label": "الشرائح",
+          "item_label": "شريحة",
+          "required": true,
+          "minLength": 1,
+          "maxLength": 5,
+          "fields": [
+            {
+              "type": "string",
+              "format": "image",
+              "id": "slides.image",
+              "label": "الصورة",
+              "value": null,
+              "required": false,
+              "icon": "sicon-image",
+              "description": null,
+              "key": "07aab40a-c0d3-45ec-adff-c66b7ee5a18c"
+            },
+            {
+              "type": "items",
+              "format": "dropdown-list",
+              "id": "slides.tone",
+              "label": "طابع الشريحة",
+              "source": "Manual",
+              "options": [
+                {
+                  "label": "فاتح (صورة على خلفية بيضاء)",
+                  "value": "light",
+                  "key": "ffd0b18b-78e2-4437-8494-6f496412a3c1"
+                },
+                {
+                  "label": "داكن (صورة كاملة)",
+                  "value": "dark",
+                  "key": "588a8afd-6ac8-441e-bcfc-e9420751d42c"
+                }
+              ],
+              "selected": [
+                {
+                  "label": "داكن (صورة كاملة)",
+                  "value": "dark",
+                  "key": "588a8afd-6ac8-441e-bcfc-e9420751d42c"
+                }
+              ],
+              "required": true,
+              "icon": "sicon-list",
+              "key": "ba599b64-b4ce-402d-b1e5-14923e2cfb86"
+            },
+            {
+              "type": "string",
+              "format": "text",
+              "id": "slides.eyebrow",
+              "label": "سطر علوي (لاتيني)",
+              "value": null,
+              "multilanguage": true,
+              "required": false,
+              "icon": "sicon-format-text-alt",
+              "key": "48727b0c-d32f-455a-8dbd-ebe84acd9d75"
+            },
+            {
+              "type": "string",
+              "format": "text",
+              "id": "slides.title",
+              "label": "العنوان",
+              "value": null,
+              "multilanguage": true,
+              "required": false,
+              "icon": "sicon-format-text-alt",
+              "key": "2dc2e95c-90aa-4067-958c-962321215ec3"
+            },
+            {
+              "type": "string",
+              "format": "text",
+              "id": "slides.accent",
+              "label": "السطر الملوّن",
+              "value": null,
+              "multilanguage": true,
+              "required": false,
+              "icon": "sicon-format-text-alt",
+              "key": "1e906416-4821-4559-a34c-847ee987a3a8"
+            },
+            {
+              "type": "string",
+              "format": "text",
+              "id": "slides.button",
+              "label": "نص الزر",
+              "value": null,
+              "multilanguage": true,
+              "required": false,
+              "icon": "sicon-format-text-alt",
+              "key": "10dd0f29-f6f5-4310-8f30-bb54ea2577ff"
+            },
+            {
+              "type": "items",
+              "format": "variable-list",
+              "id": "slides.url",
+              "label": "رابط الزر",
+              "source": "custom",
+              "sources": [
+                {
+                  "label": "منتج",
+                  "key": "products",
+                  "value": "products"
+                },
+                {
+                  "label": "منتجات مع وسم",
+                  "key": "products_tags",
+                  "value": "products_tags"
+                },
+                {
+                  "label": "تصنيف",
+                  "key": "categories",
+                  "value": "categories"
+                },
+                {
+                  "label": "صفحة تعريفية",
+                  "key": "pages",
+                  "value": "pages"
+                },
+                {
+                  "label": "التخفيضات",
+                  "key": "offers_link",
+                  "value": "offers_link"
+                }
+              ],
+              "searchable": true,
+              "value": null,
+              "required": false,
+              "icon": "sicon-link",
+              "key": "8820260c-2912-4467-9f5e-63603ae17996"
+            }
+          ],
+          "value": [
+            {
+              "slides.tone": "light",
+              "slides.eyebrow": "EHAB JASSER · PARFUMS",
+              "slides.title": "العطر قصيدة",
+              "slides.accent": "بليّا حروف",
+              "slides.button": "تسوّق المجموعات"
+            },
+            {
+              "slides.tone": "dark",
+              "slides.eyebrow": "NOW COLLECTION",
+              "slides.title": "لكلٍّ أثره..",
+              "slides.accent": "ولكلّ أثرٍ عطر",
+              "slides.button": "اكتشف الجديد"
+            },
+            {
+              "slides.tone": "dark",
+              "slides.eyebrow": "VELOUR · EAU DE PARFUM",
+              "slides.title": "إحساسٌ مخملي",
+              "slides.accent": "صيغ ليكون أثرًا",
+              "slides.button": "اكتشف ڤيلور"
+            }
+          ]
+        },
+        {
+          "type": "boolean",
+          "format": "switch",
+          "id": "autoplay",
+          "label": "تبديل تلقائي",
+          "value": true,
+          "selected": true,
+          "required": false,
+          "icon": "sicon-toggle-off",
+          "description": null
+        }
+      ]
+    },
+    {
+      "key": "af39dac8-5625-47ff-abb8-379add36eb28",
+      "title": {
+        "ar": "حلقات المجموعات",
+        "en": "Collection rings"
+      },
+      "icon": "sicon-circle",
+      "path": "home.ej-collections",
+      "fields": [
+        {
+          "type": "collection",
+          "format": "collection",
+          "id": "items",
+          "label": "المجموعات",
+          "item_label": "مجموعة",
+          "required": true,
+          "minLength": 2,
+          "maxLength": 10,
+          "fields": [
+            {
+              "type": "string",
+              "format": "image",
+              "id": "items.image",
+              "label": "صورة القارورة",
+              "value": null,
+              "required": false,
+              "icon": "sicon-image",
+              "description": null,
+              "key": "756014ce-32bd-4eb2-b221-604250872f95"
+            },
+            {
+              "type": "string",
+              "format": "text",
+              "id": "items.title",
+              "label": "الاسم",
+              "value": null,
+              "multilanguage": true,
+              "required": false,
+              "icon": "sicon-format-text-alt",
+              "key": "2bd2593b-c21f-4f7b-9e7f-75f7d17cc681"
+            },
+            {
+              "type": "items",
+              "format": "variable-list",
+              "id": "items.url",
+              "label": "الرابط",
+              "source": "custom",
+              "sources": [
+                {
+                  "label": "منتج",
+                  "key": "products",
+                  "value": "products"
+                },
+                {
+                  "label": "منتجات مع وسم",
+                  "key": "products_tags",
+                  "value": "products_tags"
+                },
+                {
+                  "label": "تصنيف",
+                  "key": "categories",
+                  "value": "categories"
+                },
+                {
+                  "label": "صفحة تعريفية",
+                  "key": "pages",
+                  "value": "pages"
+                },
+                {
+                  "label": "التخفيضات",
+                  "key": "offers_link",
+                  "value": "offers_link"
+                }
+              ],
+              "searchable": true,
+              "value": null,
+              "required": false,
+              "icon": "sicon-link",
+              "key": "a155b6fe-b9d8-45bd-ab50-45b4f7b4b9bd"
+            }
+          ],
+          "value": [
+            {
+              "items.title": "الجديد"
+            },
+            {
+              "items.title": "اتجاهات"
+            },
+            {
+              "items.title": "سنوات"
+            },
+            {
+              "items.title": "مود"
+            },
+            {
+              "items.title": "العود والخاص"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "41a2ed51-f2e2-4696-b941-1ae7f008914f",
+      "title": {
+        "ar": "شارات الثقة",
+        "en": "Trust chips"
+      },
+      "icon": "sicon-shield",
+      "path": "home.ej-trust",
+      "fields": [
+        {
+          "type": "collection",
+          "format": "collection",
+          "id": "items",
+          "label": "الشارات",
+          "item_label": "شارة",
+          "required": true,
+          "minLength": 1,
+          "maxLength": 6,
+          "fields": [
+            {
+              "type": "items",
+              "format": "dropdown-list",
+              "id": "items.icon",
+              "label": "الأيقونة",
+              "source": "Manual",
+              "options": [
+                {
+                  "label": "بطاقة",
+                  "value": "card",
+                  "key": "e4d390e4-99fe-4a91-82cd-9ab516d37133"
+                },
+                {
+                  "label": "ساعة",
+                  "value": "clock",
+                  "key": "3924fb34-8941-4aaf-af44-edb82eace40a"
+                },
+                {
+                  "label": "شاحنة",
+                  "value": "truck",
+                  "key": "d18d7b48-42a9-4208-b81e-870243318bbb"
+                },
+                {
+                  "label": "هدية",
+                  "value": "gift",
+                  "key": "cbd0e955-aabc-4294-aadb-0099541936c1"
+                },
+                {
+                  "label": "درع",
+                  "value": "shield",
+                  "key": "188f1735-c2ff-4879-8ce5-adb707666eba"
+                }
+              ],
+              "selected": [
+                {
+                  "label": "بطاقة",
+                  "value": "card",
+                  "key": "e4d390e4-99fe-4a91-82cd-9ab516d37133"
+                }
+              ],
+              "required": true,
+              "icon": "sicon-list",
+              "key": "8d3f1aa9-1874-4ff0-bacf-7d67867c071b"
+            },
+            {
+              "type": "string",
+              "format": "text",
+              "id": "items.text",
+              "label": "النص",
+              "value": null,
+              "multilanguage": true,
+              "required": false,
+              "icon": "sicon-format-text-alt",
+              "key": "90b1487a-5ac7-4796-9f79-9d8021951b77"
+            }
+          ],
+          "value": [
+            {
+              "items.icon": "card",
+              "items.text": "دفع آمن"
+            },
+            {
+              "items.icon": "clock",
+              "items.text": "تمارا ٤ دفعات"
+            },
+            {
+              "items.icon": "truck",
+              "items.text": "الدفع عند الاستلام"
+            },
+            {
+              "items.icon": "gift",
+              "items.text": "تغليف يليق بالهدية"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "6462ae5e-bc57-41fb-af74-53d185fc57ed",
+      "title": {
+        "ar": "منتج مميّز بصورة كبيرة",
+        "en": "Product spotlight"
+      },
+      "icon": "sicon-star",
+      "path": "home.ej-spotlight",
+      "fields": [
+        {
+          "type": "string",
+          "format": "text",
+          "id": "eyebrow",
+          "label": "سطر علوي",
+          "value": "NEW COLLECTION",
+          "multilanguage": true,
+          "required": false,
+          "icon": "sicon-format-text-alt"
+        },
+        {
+          "type": "string",
+          "format": "text",
+          "id": "title",
+          "label": "العنوان",
+          "value": "الجديد من",
+          "multilanguage": true,
+          "required": false,
+          "icon": "sicon-format-text-alt"
+        },
+        {
+          "type": "string",
+          "format": "text",
+          "id": "accent",
+          "label": "الجزء الملوّن",
+          "value": "إيهاب الجاسر",
+          "multilanguage": true,
+          "required": false,
+          "icon": "sicon-format-text-alt"
+        },
+        {
+          "type": "string",
+          "format": "image",
+          "id": "image",
+          "label": "الصورة",
+          "value": null,
+          "required": false,
+          "icon": "sicon-image",
+          "description": "صورة عمودية أو أفقية بجودة عالية"
+        },
+        {
+          "type": "string",
+          "format": "text",
+          "id": "name_latin",
+          "label": "اسم العطر باللاتيني",
+          "value": "VELOUR",
+          "multilanguage": true,
+          "required": false,
+          "icon": "sicon-format-text-alt"
+        },
+        {
+          "type": "string",
+          "format": "text",
+          "id": "tagline",
+          "label": "العبارة",
+          "value": "الفخامة حين تُلامس الحواس",
+          "multilanguage": true,
+          "required": false,
+          "icon": "sicon-format-text-alt"
+        },
+        {
+          "type": "string",
+          "format": "text",
+          "id": "button",
+          "label": "نص الزر",
+          "value": "تسوّق",
+          "multilanguage": true,
+          "required": false,
+          "icon": "sicon-format-text-alt"
+        },
+        {
+          "type": "items",
+          "format": "dropdown-list",
+          "id": "product",
+          "label": "المنتج",
+          "source": "products",
+          "multichoice": true,
+          "searchable": true,
+          "minLength": 1,
+          "maxLength": 1,
+          "required": true,
+          "options": [],
+          "selected": [],
+          "value": [],
+          "icon": "sicon-keyboard_arrow_down"
+        }
+      ]
+    },
+    {
+      "key": "cd477ca3-7b70-452b-ac6b-962adfc0a71f",
+      "title": {
+        "ar": "بنر الإرث",
+        "en": "Heritage banner"
+      },
+      "icon": "sicon-award",
+      "path": "home.ej-heritage",
+      "fields": [
+        {
+          "type": "string",
+          "format": "image",
+          "id": "image",
+          "label": "صورة البنر",
+          "value": null,
+          "required": false,
+          "icon": "sicon-image",
+          "description": "تظهر كاملة بدون قص، المقاس المناسب 1110×430"
+        },
+        {
+          "type": "string",
+          "format": "text",
+          "id": "year",
+          "label": "الرقم الكبير",
+          "value": "1926",
+          "multilanguage": true,
+          "required": false,
+          "icon": "sicon-format-text-alt"
+        },
+        {
+          "type": "string",
+          "format": "text",
+          "id": "title",
+          "label": "العنوان",
+          "value": "قرنٌ من الإرث.. في قارورة",
+          "multilanguage": true,
+          "required": false,
+          "icon": "sicon-format-text-alt"
+        },
+        {
+          "type": "string",
+          "format": "text",
+          "id": "caption",
+          "label": "وصف قصير",
+          "value": "الإصدار الأعلى من إيهاب الجاسر · ١٠٠ مل",
+          "multilanguage": true,
+          "required": false,
+          "icon": "sicon-format-text-alt"
+        },
+        {
+          "type": "items",
+          "format": "dropdown-list",
+          "id": "product",
+          "label": "المنتج",
+          "source": "products",
+          "multichoice": true,
+          "searchable": true,
+          "minLength": 1,
+          "maxLength": 1,
+          "required": true,
+          "options": [],
+          "selected": [],
+          "value": [],
+          "icon": "sicon-keyboard_arrow_down"
+        }
+      ]
+    },
+    {
+      "key": "6633067e-6f82-457a-85d1-d127d03cb04e",
+      "title": {
+        "ar": "البوتيك (منتجات مع فلاتر)",
+        "en": "Boutique"
+      },
+      "icon": "sicon-store",
+      "path": "home.ej-boutique",
+      "fields": [
+        {
+          "type": "static",
+          "format": "description",
+          "id": "note-280e6d41",
+          "value": "<div>تتكوّن الفلاتر تلقائيًا من تصنيفات المنتجات المختارة.</div>"
+        },
+        {
+          "type": "string",
+          "format": "text",
+          "id": "eyebrow",
+          "label": "سطر علوي",
+          "value": "THE BOUTIQUE",
+          "multilanguage": true,
+          "required": false,
+          "icon": "sicon-format-text-alt"
+        },
+        {
+          "type": "string",
+          "format": "text",
+          "id": "title",
+          "label": "العنوان",
+          "value": "ستّ قصائد،",
+          "multilanguage": true,
+          "required": false,
+          "icon": "sicon-format-text-alt"
+        },
+        {
+          "type": "string",
+          "format": "text",
+          "id": "accent",
+          "label": "السطر الملوّن",
+          "value": "لكل واحدة صوت",
+          "multilanguage": true,
+          "required": false,
+          "icon": "sicon-format-text-alt"
+        },
+        {
+          "type": "string",
+          "format": "textarea",
+          "id": "description",
+          "label": "الوصف",
+          "value": "كل مجموعة تحكي فكرة. اختر البيت اللي يشبهك، وخلّ العطر يكمّل الباقي.",
+          "multilanguage": true,
+          "required": false,
+          "icon": "sicon-typography"
+        },
+        {
+          "type": "string",
+          "format": "text",
+          "id": "all_label",
+          "label": "اسم فلتر الكل",
+          "value": "الكل",
+          "multilanguage": true,
+          "required": false,
+          "icon": "sicon-format-text-alt"
+        },
+        {
+          "type": "items",
+          "format": "dropdown-list",
+          "id": "products",
+          "label": "المنتجات",
+          "source": "products",
+          "multichoice": true,
+          "searchable": true,
+          "minLength": 1,
+          "maxLength": 24,
+          "required": true,
+          "options": [],
+          "selected": [],
+          "value": [],
+          "icon": "sicon-keyboard_arrow_down"
+        }
+      ]
+    },
+    {
+      "key": "4684d634-419d-47bc-8029-dafe07425f61",
+      "title": {
+        "ar": "بوصلة الاتجاهات",
+        "en": "Directions compass"
+      },
+      "icon": "sicon-location",
+      "path": "home.ej-directions",
+      "fields": [
+        {
+          "type": "string",
+          "format": "text",
+          "id": "eyebrow",
+          "label": "سطر علوي",
+          "value": "DIRECTIONS",
+          "multilanguage": true,
+          "required": false,
+          "icon": "sicon-format-text-alt"
+        },
+        {
+          "type": "string",
+          "format": "text",
+          "id": "title",
+          "label": "العنوان",
+          "value": "عطور اتجاهات",
+          "multilanguage": true,
+          "required": false,
+          "icon": "sicon-format-text-alt"
+        },
+        {
+          "type": "string",
+          "format": "textarea",
+          "id": "description",
+          "label": "الوصف",
+          "value": "ثلاث جهات، ثلاث شخصيات. أي جهة تمشي لها؟",
+          "multilanguage": true,
+          "required": false,
+          "icon": "sicon-typography"
+        },
+        {
+          "type": "items",
+          "format": "dropdown-list",
+          "id": "products",
+          "label": "المنتجات (حتى ٤)",
+          "source": "products",
+          "multichoice": true,
+          "searchable": true,
+          "minLength": 1,
+          "maxLength": 4,
+          "required": true,
+          "options": [],
+          "selected": [],
+          "value": [],
+          "icon": "sicon-keyboard_arrow_down"
+        }
+      ]
+    },
+    {
+      "key": "4b585a85-6790-4e33-8fda-2215a29799e3",
+      "title": {
+        "ar": "وش مودك اليوم؟",
+        "en": "Mood picker"
+      },
+      "icon": "sicon-sparkles",
+      "path": "home.ej-mood",
+      "fields": [
+        {
+          "type": "static",
+          "format": "description",
+          "id": "note-99a6be3f",
+          "value": "<div>اختر ثلاثة منتجات بالترتيب، وكل منتج يأخذ العبارة واللون المقابلين له.</div>"
+        },
+        {
+          "type": "string",
+          "format": "text",
+          "id": "eyebrow",
+          "label": "سطر علوي",
+          "value": "MOOD · ٥٠ مل",
+          "multilanguage": true,
+          "required": false,
+          "icon": "sicon-format-text-alt"
+        },
+        {
+          "type": "string",
+          "format": "text",
+          "id": "title",
+          "label": "العنوان",
+          "value": "وش مودك",
+          "multilanguage": true,
+          "required": false,
+          "icon": "sicon-format-text-alt"
+        },
+        {
+          "type": "string",
+          "format": "text",
+          "id": "accent",
+          "label": "الجزء الملوّن",
+          "value": "اليوم؟",
+          "multilanguage": true,
+          "required": false,
+          "icon": "sicon-format-text-alt"
+        },
+        {
+          "type": "items",
+          "format": "dropdown-list",
+          "id": "products",
+          "label": "المنتجات (٣)",
+          "source": "products",
+          "multichoice": true,
+          "searchable": true,
+          "minLength": 3,
+          "maxLength": 3,
+          "required": true,
+          "options": [],
+          "selected": [],
+          "value": [],
+          "icon": "sicon-keyboard_arrow_down"
+        },
+        {
+          "type": "string",
+          "format": "text",
+          "id": "line_1",
+          "label": "عبارة المنتج الأول",
+          "value": "للأيام اللي ما تشبه غيرها",
+          "multilanguage": true,
+          "required": false,
+          "icon": "sicon-format-text-alt"
+        },
+        {
+          "type": "string",
+          "format": "text",
+          "id": "line_2",
+          "label": "عبارة المنتج الثاني",
+          "value": "توازن يرافقك من الصبح لآخر الليل",
+          "multilanguage": true,
+          "required": false,
+          "icon": "sicon-format-text-alt"
+        },
+        {
+          "type": "string",
+          "format": "text",
+          "id": "line_3",
+          "label": "عبارة المنتج الثالث",
+          "value": "نعومة تهمس ولا تعلن",
+          "multilanguage": true,
+          "required": false,
+          "icon": "sicon-format-text-alt"
+        }
+      ]
+    },
+    {
+      "key": "300c16f2-bc3a-4cc8-b9a1-3540987a2406",
+      "title": {
+        "ar": "سنوات (قوارير بأرقام)",
+        "en": "Years"
+      },
+      "icon": "sicon-calendar",
+      "path": "home.ej-years",
+      "fields": [
+        {
+          "type": "string",
+          "format": "text",
+          "id": "eyebrow",
+          "label": "سطر علوي",
+          "value": "YEARS",
+          "multilanguage": true,
+          "required": false,
+          "icon": "sicon-format-text-alt"
+        },
+        {
+          "type": "string",
+          "format": "text",
+          "id": "title",
+          "label": "العنوان",
+          "value": "عطور سنوات",
+          "multilanguage": true,
+          "required": false,
+          "icon": "sicon-format-text-alt"
+        },
+        {
+          "type": "string",
+          "format": "textarea",
+          "id": "description",
+          "label": "الوصف",
+          "value": "ثلاث قوارير سوداء بختم ذهبي، كل رقم يحكي مرحلة.",
+          "multilanguage": true,
+          "required": false,
+          "icon": "sicon-typography"
+        },
+        {
+          "type": "items",
+          "format": "dropdown-list",
+          "id": "products",
+          "label": "المنتجات",
+          "source": "products",
+          "multichoice": true,
+          "searchable": true,
+          "minLength": 1,
+          "maxLength": 6,
+          "required": true,
+          "options": [],
+          "selected": [],
+          "value": [],
+          "icon": "sicon-keyboard_arrow_down"
+        }
+      ]
+    },
+    {
+      "key": "0a5b4f58-2db7-4c02-90fd-e7e97848c0ca",
+      "title": {
+        "ar": "قصة العلامة",
+        "en": "The house"
+      },
+      "icon": "sicon-home",
+      "path": "home.ej-house",
+      "fields": [
+        {
+          "type": "string",
+          "format": "image",
+          "id": "image",
+          "label": "الصورة (تظهر داخل قوس)",
+          "value": null,
+          "required": false,
+          "icon": "sicon-image",
+          "description": null
+        },
+        {
+          "type": "string",
+          "format": "text",
+          "id": "eyebrow",
+          "label": "سطر علوي",
+          "value": "THE HOUSE",
+          "multilanguage": true,
+          "required": false,
+          "icon": "sicon-format-text-alt"
+        },
+        {
+          "type": "string",
+          "format": "text",
+          "id": "title",
+          "label": "العنوان",
+          "value": "علامة صُنعت",
+          "multilanguage": true,
+          "required": false,
+          "icon": "sicon-format-text-alt"
+        },
+        {
+          "type": "string",
+          "format": "text",
+          "id": "accent",
+          "label": "السطر الملوّن",
+          "value": "بعناية",
+          "multilanguage": true,
+          "required": false,
+          "icon": "sicon-format-text-alt"
+        },
+        {
+          "type": "string",
+          "format": "textarea",
+          "id": "text",
+          "label": "النص",
+          "value": "علامة تجارية سعودية تهتم بكل ما هو مختص في عالم الأناقة والجمال. كل قارورة تُصمَّم لتكون قصيدة.. بليّا حروف.",
+          "multilanguage": true,
+          "required": false,
+          "icon": "sicon-typography"
+        },
+        {
+          "type": "string",
+          "format": "text",
+          "id": "signature",
+          "label": "التوقيع",
+          "value": "Ehab Jasser",
+          "multilanguage": true,
+          "required": false,
+          "icon": "sicon-format-text-alt"
+        },
+        {
+          "type": "string",
+          "format": "text",
+          "id": "button",
+          "label": "نص الزر",
+          "value": "About EJ",
+          "multilanguage": true,
+          "required": false,
+          "icon": "sicon-format-text-alt"
+        },
+        {
+          "type": "items",
+          "format": "variable-list",
+          "id": "url",
+          "label": "رابط الزر",
+          "source": "custom",
+          "sources": [
+            {
+              "label": "منتج",
+              "key": "products",
+              "value": "products"
+            },
+            {
+              "label": "منتجات مع وسم",
+              "key": "products_tags",
+              "value": "products_tags"
+            },
+            {
+              "label": "تصنيف",
+              "key": "categories",
+              "value": "categories"
+            },
+            {
+              "label": "صفحة تعريفية",
+              "key": "pages",
+              "value": "pages"
+            },
+            {
+              "label": "التخفيضات",
+              "key": "offers_link",
+              "value": "offers_link"
+            }
+          ],
+          "searchable": true,
+          "value": null,
+          "required": false,
+          "icon": "sicon-link"
+        }
+      ]
+    },
+    {
+      "key": "325f25d9-2851-4836-8ab3-49085fa9b11e",
+      "title": {
+        "ar": "قالوا عن العطر",
+        "en": "Words"
+      },
+      "icon": "sicon-chat-bubbles",
+      "path": "home.ej-words",
+      "fields": [
+        {
+          "type": "string",
+          "format": "text",
+          "id": "eyebrow",
+          "label": "سطر علوي",
+          "value": "WORDS",
+          "multilanguage": true,
+          "required": false,
+          "icon": "sicon-format-text-alt"
+        },
+        {
+          "type": "string",
+          "format": "text",
+          "id": "title",
+          "label": "العنوان",
+          "value": "قالوا عن العطر",
+          "multilanguage": true,
+          "required": false,
+          "icon": "sicon-format-text-alt"
+        },
+        {
+          "type": "collection",
+          "format": "collection",
+          "id": "reviews",
+          "label": "الآراء",
+          "item_label": "رأي",
+          "required": true,
+          "minLength": 1,
+          "maxLength": 12,
+          "fields": [
+            {
+              "type": "string",
+              "format": "textarea",
+              "id": "reviews.text",
+              "label": "الرأي",
+              "value": null,
+              "multilanguage": true,
+              "required": false,
+              "icon": "sicon-typography",
+              "key": "12f4ba41-6ae4-4c29-ac7f-5f9dfb54a6f0"
+            },
+            {
+              "type": "string",
+              "format": "text",
+              "id": "reviews.name",
+              "label": "الاسم",
+              "value": null,
+              "multilanguage": true,
+              "required": false,
+              "icon": "sicon-format-text-alt",
+              "key": "e0cfcfb1-2427-43ae-8780-309b5e06b6c0"
+            },
+            {
+              "type": "string",
+              "format": "text",
+              "id": "reviews.city",
+              "label": "المدينة أو الوصف",
+              "value": null,
+              "multilanguage": true,
+              "required": false,
+              "icon": "sicon-format-text-alt",
+              "key": "7ecf7efe-05a0-4601-84ab-48ab7f9892d3"
+            }
+          ],
+          "value": [
+            {
+              "reviews.text": "متجر ممتاز ومتميز في عطوره، واسم مشرف للعطور السعودية",
+              "reviews.name": "خالد الرويتع",
+              "reviews.city": "الرياض"
+            },
+            {
+              "reviews.text": "العطر وصل سليم، والبكج حلو",
+              "reviews.name": "شيخة اليوسف",
+              "reviews.city": "الدمام"
+            },
+            {
+              "reviews.text": "رائع جدًا",
+              "reviews.name": "نايف",
+              "reviews.city": "مشتري موثّق · عن ڤيلور"
+            },
+            {
+              "reviews.text": "عطر East يفوز",
+              "reviews.name": "نايف الغشام",
+              "reviews.city": "الدمام"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "7ccae528-4e78-417d-b28b-9db4a76fbdda",
+      "title": {
+        "ar": "القائمة الخاصة",
+        "en": "Private list"
+      },
+      "icon": "sicon-mail",
+      "path": "home.ej-newsletter",
+      "fields": [
+        {
+          "type": "string",
+          "format": "text",
+          "id": "eyebrow",
+          "label": "سطر علوي",
+          "value": "PRIVATE LIST",
+          "multilanguage": true,
+          "required": false,
+          "icon": "sicon-format-text-alt"
+        },
+        {
+          "type": "string",
+          "format": "text",
+          "id": "title",
+          "label": "العنوان",
+          "value": "كن أول من يشمّ الإصدار القادم",
+          "multilanguage": true,
+          "required": false,
+          "icon": "sicon-format-text-alt"
+        },
+        {
+          "type": "string",
+          "format": "text",
+          "id": "text",
+          "label": "الوصف",
+          "value": "إطلاقات محدودة وعروض خاصة لمشتركي القائمة.",
+          "multilanguage": true,
+          "required": false,
+          "icon": "sicon-format-text-alt"
+        },
+        {
+          "type": "string",
+          "format": "text",
+          "id": "button",
+          "label": "نص الزر",
+          "value": "اشترك",
+          "multilanguage": true,
+          "required": false,
+          "icon": "sicon-format-text-alt"
+        },
+        {
+          "type": "items",
+          "format": "variable-list",
+          "id": "url",
+          "label": "رابط الاشتراك (واتساب أو نموذج)",
+          "source": "custom",
+          "sources": [
+            {
+              "label": "منتج",
+              "key": "products",
+              "value": "products"
+            },
+            {
+              "label": "منتجات مع وسم",
+              "key": "products_tags",
+              "value": "products_tags"
+            },
+            {
+              "label": "تصنيف",
+              "key": "categories",
+              "value": "categories"
+            },
+            {
+              "label": "صفحة تعريفية",
+              "key": "pages",
+              "value": "pages"
+            },
+            {
+              "label": "التخفيضات",
+              "key": "offers_link",
+              "value": "offers_link"
+            }
+          ],
+          "searchable": true,
+          "value": null,
+          "required": false,
+          "icon": "sicon-link"
+        }
+      ]
+    }
+  ]
+}

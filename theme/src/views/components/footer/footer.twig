@@ -1,0 +1,29 @@
+{# Footer: oversized wordmark, store menu, payments, tax number. #}
+<footer class="ej-footer">
+    <div class="ej-container ej-footer__grid">
+        <div class="ej-footer__brand" data-reveal>
+            <img src="{{ store.logo }}" alt="{{ store.name }}" width="96" height="96" loading="lazy">
+            <p>{{ theme.settings.get('footer_about') }}</p>
+        </div>
+        <nav class="ej-footer__nav" data-reveal>
+            <salla-menu source="footer"></salla-menu>
+        </nav>
+        <div class="ej-footer__meta" data-reveal>
+            <span class="ej-latin ej-footer__pay">{{ theme.settings.get('payment_line') }}</span>
+            {% if store.social %}
+                <div class="ej-footer__social">
+                    {% for name, url in store.social %}
+                        {% if url %}<a href="{{ url }}" target="_blank" rel="noopener">{{ name }}</a>{% endif %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="ej-footer__word" aria-hidden="true"><span>EHAB JASSER</span></div>
+    <div class="ej-container ej-footer__legal">
+        <span>© {{ 'now'|date('Y') }} {{ store.name }}</span>
+        {% if store.settings.tax.number %}
+            <span>{{ trans('ej.tax_number') }} {{ store.settings.tax.number }}</span>
+        {% endif %}
+    </div>
+</footer>

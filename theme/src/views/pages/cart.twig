@@ -1,0 +1,74 @@
+{#
+  Cart page. Variables: cart.* — see Raed's pages/cart.twig.
+  Lines are server-rendered from cart.items; cart.js keeps them and the summary in sync after every change.
+  Checkout itself is Salla's: the button calls salla.cart.submit().
+#}
+{% extends "layouts.master" %}
+{% block content %}
+<div class="ej-cartpage" data-ej-cartpage>
+    <div class="ej-container">
+        <div class="ej-cartpage__head">
+            <h1 data-split>{{ trans('ej.your_cart') }}</h1>
+            <ol class="ej-steps" aria-label="{{ trans('ej.checkout') }}">
+                <li class="is-active"><i>١</i>{{ trans('ej.cart') }}</li>
+                <li><i>٢</i>{{ trans('ej.shipping') }}</li>
+                <li><i>٣</i>{{ trans('ej.checkout') }}</li>
+            </ol>
+        </div>
+
+        <div class="ej-cartpage__grid">
+            <div>
+                <div class="ej-free ej-free--page" data-ej-free {{ cart.free_shipping_bar ? '' : 'hidden' }}>
+                    <p data-ej-free-text></p>
+                    <span class="ej-free__bar"><span data-ej-free-fill style="width: {{ cart.free_shipping_bar.percent ?? 0 }}%"></span></span>
+                </div>
+
+                <div class="ej-cartpage__lines" data-ej-cart-lines>
+                    {% for item in cart.items %}
+                        <div class="ej-line" data-item-id="{{ item.id }}" data-product-id="{{ item.product_id }}" data-price="{{ item.product_price }}">
+                            <a class="ej-line__img" href="{{ item.url }}"><img src="{{ item.product_image }}" alt="{{ item.product_name }}" loading="lazy"></a>
+                            <div class="ej-line__body">
+                                <div class="ej-line__top">
+                                    <a class="ej-line__name" href="{{ item.url }}">{{ item.product_name }}</a>
+                                    <strong class="ej-line__total">{{ item.total|money }}</strong>
+                                </div>
+                                <div class="ej-line__bottom">
+                                    <div class="ej-qty ej-qty--sm">
+                                        <button type="button" data-ej-line-step="1" aria-label="{{ trans('ej.increase') }}">+</button>
+                                        <span data-ej-line-qty>{{ item.quantity }}</span>
+                                        <button type="button" data-ej-line-step="-1" aria-label="{{ trans('ej.decrease') }}">−</button>
+                                    </div>
+                                    <button type="button" class="ej-line__remove" data-ej-line-remove>{{ trans('ej.remove') }}</button>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="ej-cartpage__empty" data-ej-cart-empty {{ cart.items|length ? 'hidden' : '' }}>
+                    <strong>{{ trans('ej.empty_cart') }}</strong>
+                    <span>{{ trans('ej.empty_cart_hint') }}</span>
+                    <a class="ej-btn ej-btn--ink" href="{{ store.url }}">{{ trans('ej.shop_now') }}</a>
+                </div>
+            </div>
+
+            <aside class="ej-summary" data-ej-summary>
+                <h2>{{ trans('ej.order_summary') }}</h2>
+                <dl>
+                    <div><dt>{{ trans('ej.subtotal') }}</dt><dd data-ej-sum-sub>{{ cart.sub_total|money }}</dd></div>
+                    <div><dt>{{ trans('ej.shipping') }}</dt><dd>{{ trans('ej.shipping_next_step') }}</dd></div>
+                    <div class="ej-summary__total"><dt>{{ trans('ej.total') }}</dt><dd data-ej-sum-total>{{ cart.total|money }}</dd></div>
+                </dl>
+                <small>{{ trans('ej.tax_included') }}</small>
+                <salla-installment price="{{ cart.total }}" data-ej-installment></salla-installment>
+                <button type="button" class="ej-btn ej-btn--ink ej-btn--block" data-ej-checkout data-magnetic>{{ trans('ej.checkout') }}</button>
+                <a class="ej-summary__back" href="{{ store.url }}">{{ trans('ej.continue_shopping') }}</a>
+                <p class="ej-summary__pay ej-latin">{{ theme.settings.get('payment_line') }}</p>
+            </aside>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+    <script defer src="{{ 'cart.js' | asset }}"></script>
+{% endblock %}

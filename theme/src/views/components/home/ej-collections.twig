@@ -1,0 +1,16 @@
+{#
+| component.items | object[] | image, title, url |
+#}
+<nav class="ej-rings" component-id="{{ componentId }}" aria-label="{{ trans('ej.menu') }}">
+    <div class="ej-rings__track ej-snap">
+        {% for item in component.items %}
+            <a class="ej-ring" href="{{ item.url ?: '#shop' }}" data-reveal style="--i: {{ loop.index0 }}">
+                <span class="ej-ring__halo" aria-hidden="true"></span>
+                <span class="ej-ring__disc">
+                    {% if item.image %}<img src="{{ item.image }}" alt="" loading="lazy">{% endif %}
+                </span>
+                <span class="ej-ring__label">{{ item.title }}</span>
+            </a>
+        {% endfor %}
+    </div>
+</nav>

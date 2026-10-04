@@ -1,0 +1,40 @@
+{#
+  Mini cart: bottom sheet on phones, side panel on desktop, plus the floating pill and the toast.
+  Lines are rendered by cart-ui.js from the Salla cart (salla.cart.details), so it stays in sync on every page.
+#}
+<div class="ej-drawer" data-ej-drawer hidden>
+    <div class="ej-drawer__scrim" data-ej-cart-close></div>
+    <aside class="ej-drawer__panel" role="dialog" aria-modal="true" aria-label="{{ trans('ej.your_cart') }}">
+        <span class="ej-drawer__grip" aria-hidden="true"></span>
+        <div class="ej-drawer__head">
+            <h2>{{ trans('ej.your_cart') }} <small><span data-ej-cart-count-text>٠</span> {{ trans('ej.items') }}</small></h2>
+            <button class="ej-icon-btn" type="button" data-ej-cart-close aria-label="{{ trans('ej.close') }}">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </button>
+        </div>
+        <div class="ej-free" data-ej-free hidden>
+            <p data-ej-free-text></p>
+            <span class="ej-free__bar"><span data-ej-free-fill></span></span>
+        </div>
+        <div class="ej-drawer__lines" data-ej-lines></div>
+        <div class="ej-drawer__empty" data-ej-empty>
+            <strong>{{ trans('ej.empty_cart') }}</strong>
+            <span>{{ trans('ej.empty_cart_hint') }}</span>
+        </div>
+        <div class="ej-drawer__foot" data-ej-foot hidden>
+            <div class="ej-drawer__total"><span>{{ trans('ej.subtotal') }}</span><strong data-ej-subtotal></strong></div>
+            <salla-installment data-ej-installment price="0"></salla-installment>
+            <a class="ej-btn ej-btn--ink ej-btn--block" href="{{ link('cart') }}">{{ trans('ej.checkout') }}</a>
+        </div>
+    </aside>
+</div>
+
+<button class="ej-pill" type="button" data-ej-cart-open data-ej-pill hidden>
+    <span class="ej-pill__count"><span class="ej-badge" data-ej-cart-count>0</span>{{ trans('ej.view_cart') }}</span>
+    <span class="ej-pill__total" data-ej-subtotal></span>
+</button>
+
+<div class="ej-toast" data-ej-toast role="status" aria-live="polite" hidden>
+    <span class="ej-toast__img"><img alt="" data-ej-toast-img></span>
+    <span class="ej-toast__text">{{ trans('ej.added') }}</span>
+</div>

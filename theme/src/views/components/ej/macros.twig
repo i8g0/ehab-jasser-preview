@@ -1,0 +1,30 @@
+{# Shared markup helpers. Import with: {% import 'components.ej.macros' as ej %} #}
+
+{% macro head(eyebrow, title, accent, description, modifier) %}
+    <div class="ej-head {{ modifier ? 'ej-head--' ~ modifier : '' }}">
+        {% if eyebrow %}
+            <span class="ej-eyebrow ej-eyebrow--ruled" data-reveal>{{ eyebrow }}</span>
+        {% endif %}
+        <h2 class="ej-head__title" data-split>
+            {{ title }}{% if accent %} <span class="ej-accent">{{ accent }}</span>{% endif %}
+        </h2>
+        {% if description %}
+            <p class="ej-head__text" data-reveal>{{ description|nl2br }}</p>
+        {% endif %}
+    </div>
+{% endmacro %}
+
+{% macro icon(name) %}
+    {% if name == 'clock' %}<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+    {% elseif name == 'truck' %}<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="17.5" r="1.5"/><circle cx="17" cy="17.5" r="1.5"/></svg>
+    {% elseif name == 'gift' %}<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="4" y="9" width="16" height="11" rx="1"/><path d="M4 13h16M12 9v11M12 9c-2-4-6-3-5 0M12 9c2-4 6-3 5 0"/></svg>
+    {% elseif name == 'shield' %}<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="m9 12 2 2 4-4"/></svg>
+    {% elseif name == 'plus' %}<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+    {% else %}<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg>
+    {% endif %}
+{% endmacro %}
+
+{# Data attributes every add-to-cart button carries, so the drawer can show the line instantly. #}
+{% macro add_attrs(product) %}
+    data-ej-add="{{ product.id }}" data-name="{{ product.name }}" data-image="{{ product.image.url }}" data-url="{{ product.url }}" data-price="{{ product.price }}"
+{% endmacro %}

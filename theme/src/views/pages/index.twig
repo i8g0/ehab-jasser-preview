@@ -1,0 +1,12 @@
+{#
+| page.title | string |
+| page.slug  | string |
+The home page is fully made of components the merchant arranges in Salla (twilight.json → components).
+#}
+{% extends "layouts.master" %}
+{% block content %}
+    {% component home %}
+{% endblock %}
+{% block scripts %}
+    <script defer src="{{ 'home.js' | asset }}"></script>
+{% endblock %}

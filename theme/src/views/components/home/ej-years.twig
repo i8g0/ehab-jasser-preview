@@ -1,0 +1,37 @@
+{#
+| component.eyebrow, title, description | string |
+| component.products                    | Product[] — the number comes from product.subtitle ("THREE YEARS" → 3) |
+#}
+{% import 'components.ej.macros' as ej %}
+{% set nums = {'ONE': 1, 'TWO': 2, 'THREE': 3, 'FOUR': 4, 'FIVE': 5, 'SIX': 6, 'SEVEN': 7, 'EIGHT': 8, 'NINE': 9, 'TEN': 10} %}
+<section class="ej-years" component-id="{{ componentId }}">
+    <span class="ej-years__glow" aria-hidden="true"></span>
+    <div class="ej-container">
+        {{ ej.head(component.eyebrow, component.title, null, component.description, 'night') }}
+    </div>
+    <div class="ej-years__track ej-snap">
+        {% for p in component.products %}
+            {% set word = (p.subtitle ?: '')|split(' ')|first|upper %}
+            {% set n = nums[word] ?? loop.index %}
+            <article class="ej-year" data-reveal style="--i: {{ loop.index0 }}">
+                <a class="ej-year__stage" href="{{ p.url }}" data-tilt>
+                    <span class="ej-year__num ej-latin" aria-hidden="true" data-parallax="-0.04">{{ n }}</span>
+                    <img src="{{ p.image.url }}" alt="{{ p.name }}" loading="lazy" data-ej-fly-src>
+                    <span class="ej-card__sheen" aria-hidden="true"></span>
+                </a>
+                <div class="ej-year__panel">
+                    <div class="ej-year__row">
+                        <span class="ej-year__id">
+                            <span class="ej-year__n ej-latin">{{ n }}</span>
+                            <span><strong>{{ p.name }}</strong><small class="ej-latin">{{ p.subtitle }}</small></span>
+                        </span>
+                        <span class="ej-year__price">{{ p.price|money }}</span>
+                    </div>
+                    {% if p.is_available %}
+                        <button type="button" class="ej-btn ej-btn--line" {{ ej.add_attrs(p) }}>{{ ej.icon('plus') }} {{ trans('ej.add_to_cart') }}</button>
+                    {% endif %}
+                </div>
+            </article>
+        {% endfor %}
+    </div>
+</section>

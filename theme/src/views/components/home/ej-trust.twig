@@ -1,0 +1,12 @@
+{#
+| component.items | object[] | icon (card|clock|truck|gift|shield), text |
+#}
+{% import 'components.ej.macros' as ej %}
+<div class="ej-trust" component-id="{{ componentId }}">
+    <ul class="ej-trust__list ej-snap">
+        {% for item in component.items %}
+            {% set icon %}{% include 'components.ej.pick' with {v: item.icon} %}{% endset %}
+            <li class="ej-chip" data-reveal style="--i: {{ loop.index0 }}">{{ ej.icon(icon|trim) }}<span>{{ item.text }}</span></li>
+        {% endfor %}
+    </ul>
+</div>

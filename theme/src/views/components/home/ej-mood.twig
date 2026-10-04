@@ -1,0 +1,38 @@
+{#
+| component.eyebrow, title, accent    | string    |
+| component.products                  | Product[3] — ordered: rebellious, balanced, angelic |
+| component.line_1, line_2, line_3    | string    | the quote shown for each product |
+Each mood recolours the whole section (ember → amber → pearl).
+#}
+{% import 'components.ej.macros' as ej %}
+{% set lines = [component.line_1, component.line_2, component.line_3] %}
+{% set start = component.products|length > 1 ? 1 : 0 %}
+<section class="ej-mood" id="mood" component-id="{{ componentId }}" data-ej-mood data-mood="{{ start }}">
+    <div class="ej-container ej-mood__grid">
+        <div class="ej-mood__copy">
+            {% if component.eyebrow %}<span class="ej-eyebrow" data-reveal>{{ component.eyebrow }}</span>{% endif %}
+            <h2 class="ej-mood__title" data-split>{{ component.title }} <span class="ej-accent">{{ component.accent }}</span></h2>
+            <div class="ej-mood__pick" role="group" aria-label="{{ component.title }} {{ component.accent }}">
+                {% for p in component.products %}
+                    <button type="button" class="ej-mood__btn{{ loop.index0 == start ? ' is-active' : '' }}" aria-pressed="{{ loop.index0 == start ? 'true' : 'false' }}"
+                            data-mood-pick="{{ loop.index0 }}" data-line="{{ lines[loop.index0] }}" {{ ej.add_attrs(p) }} data-price-text="{{ p.price|money }}">
+                        {{ p.name }}
+                    </button>
+                {% endfor %}
+            </div>
+            <p class="ej-mood__line" data-ej-mood-line>«{{ lines[start] }}»</p>
+            {% set sp = component.products[start] %}
+            {% if sp %}
+                <button type="button" class="ej-btn ej-btn--gold ej-mood__cta" {{ ej.add_attrs(sp) }} data-ej-mood-cta data-magnetic>
+                    {{ trans('ej.add') }} <span data-ej-mood-name>{{ sp.name }}</span> · <span data-ej-mood-price>{{ sp.price|money }}</span>
+                </button>
+            {% endif %}
+        </div>
+        <div class="ej-mood__stage" data-ej-fly-box>
+            <span class="ej-mood__halo" aria-hidden="true"></span>
+            {% for p in component.products %}
+                <img class="ej-mood__bottle{{ loop.index0 == start ? ' is-active' : '' }}" src="{{ p.image.url }}" alt="{{ p.name }}" loading="lazy" data-mood-img="{{ loop.index0 }}" {{ loop.index0 == start ? 'data-ej-fly-src' : '' }}>
+            {% endfor %}
+        </div>
+    </div>
+</section>

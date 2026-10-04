@@ -1,0 +1,29 @@
+{#
+| component.eyebrow, title, accent, image, name_latin, tagline, button | string |
+| component.product                                                    | Product[] (first is used) |
+#}
+{% set p = component.product|first %}
+<section class="ej-spotlight" id="new" component-id="{{ componentId }}">
+    <div class="ej-container">
+        <div class="ej-head ej-head--start">
+            {% if component.eyebrow %}<span class="ej-eyebrow" data-reveal>{{ component.eyebrow }}</span>{% endif %}
+            <h2 class="ej-head__title" data-split>{{ component.title }} <span class="ej-accent">{{ component.accent }}</span></h2>
+        </div>
+        <a class="ej-spotlight__card" href="{{ p ? p.url : '#shop' }}" data-mask-reveal>
+            <span class="ej-spotlight__media" data-parallax="0.1">
+                {% if component.image %}<img src="{{ component.image }}" alt="{{ component.tagline }}" loading="lazy">{% endif %}
+            </span>
+            <span class="ej-spotlight__veil" aria-hidden="true"></span>
+            {% if p %}
+                <span class="ej-spotlight__bottle" aria-hidden="true"><img src="{{ p.image.url }}" alt="" loading="lazy"></span>
+            {% endif %}
+            <span class="ej-spotlight__copy">
+                <span class="ej-spotlight__name ej-latin" data-letters>{{ component.name_latin }}</span>
+                <span class="ej-spotlight__tag">{{ component.tagline }}</span>
+                {% if p %}
+                    <span class="ej-btn ej-btn--cream ej-spotlight__cta">{{ component.button }} {{ p.name }} · {{ p.price|money }}</span>
+                {% endif %}
+            </span>
+        </a>
+    </div>
+</section>

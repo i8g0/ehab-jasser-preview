@@ -1,0 +1,66 @@
+{#
+  Ehab Jasser — master layout (Salla Twilight).
+  Shared variables: store, theme, user, page, language — see Raed's master.twig for the full table.
+  Everything visual lives in app.css / app.js; this file only wires the shell.
+#}
+<!DOCTYPE html>
+<html lang="{{ language.code }}" dir="{{ theme.is_rtl ? 'rtl' : 'ltr' }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#17120E">
+    {% hook 'head:start' %}
+    {% hook head %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&display=swap">
+    <link rel="stylesheet" href="{{ 'app.css' | asset }}">
+    {% block styles %}{% endblock %}
+    <script>
+        window.EJ_SETTINGS = {
+            sound: {{ theme.settings.get('enable_sound', true) ? 'true' : 'false' }},
+            intro: {{ theme.settings.get('enable_intro', true) ? 'true' : 'false' }},
+            cursor: {{ theme.settings.get('enable_cursor', true) ? 'true' : 'false' }},
+            cartUrl: "{{ link('cart') }}",
+            i18n: {
+                added: "{{ trans('ej.added') }}",
+                items: "{{ trans('ej.items') }}",
+                remove: "{{ trans('ej.remove') }}",
+                increase: "{{ trans('ej.increase') }}",
+                decrease: "{{ trans('ej.decrease') }}",
+                freeLeft: "{{ trans('ej.free_shipping_left') }}",
+                freeDone: "{{ trans('ej.free_shipping_done') }}"
+            }
+        };
+        document.documentElement.classList.add('js');
+    </script>
+    {% hook 'head:end' %}
+</head>
+<body id="app" class="ej page-{{ page.slug|replace({'.': '-'}) }} {% hook 'body:classes' %}">
+{% hook 'body:start' %}
+
+{% if theme.settings.get('enable_intro', true) and page.slug == 'index' %}
+    {% include 'components.ej.intro' %}
+{% endif %}
+
+{% component 'header.header' %}
+
+<main id="main-content" role="main">
+    {% block content %}{% endblock %}
+</main>
+
+{% component 'footer.footer' %}
+
+{% include 'components.ej.cart-drawer' %}
+
+<div class="ej-grain" aria-hidden="true"></div>
+<div class="ej-cursor" aria-hidden="true"></div>
+
+<script defer src="{{ 'app.js' | asset }}"></script>
+{% block scripts %}{% endblock %}
+
+{# Salla's own search modal; the header search button opens it via `search::open`. #}
+<salla-search></salla-search>
+{% hook 'body:end' %}
+</body>
+</html>

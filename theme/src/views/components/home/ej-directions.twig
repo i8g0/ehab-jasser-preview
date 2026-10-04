@@ -1,0 +1,40 @@
+{#
+| component.eyebrow, title, description | string |
+| component.products                    | Product[] — the first letter of product.subtitle (N/E/S/W) sets the compass heading |
+#}
+{% import 'components.ej.macros' as ej %}
+<section class="ej-directions" component-id="{{ componentId }}" data-ej-compass>
+    <div class="ej-container">
+        {{ ej.head(component.eyebrow, component.title, null, component.description, 'center') }}
+    </div>
+    <div class="ej-directions__stage">
+        <div class="ej-compass" aria-hidden="true">
+            <svg viewBox="0 0 220 220" class="ej-compass__dial">
+                <circle cx="110" cy="110" r="104" class="ej-compass__ring"/>
+                <circle cx="110" cy="110" r="88" class="ej-compass__ring ej-compass__ring--thin"/>
+                <g class="ej-compass__ticks">
+                    {% for i in 0..71 %}
+                        <line x1="110" y1="8" x2="110" y2="{{ i % 6 == 0 ? 20 : 14 }}" transform="rotate({{ i * 5 }} 110 110)"/>
+                    {% endfor %}
+                </g>
+                <text x="110" y="42" class="ej-compass__l" data-l="N">N</text>
+                <text x="182" y="116" class="ej-compass__l" data-l="E">E</text>
+                <text x="110" y="190" class="ej-compass__l" data-l="S">S</text>
+                <text x="38" y="116" class="ej-compass__l" data-l="W">W</text>
+                <g class="ej-compass__needle">
+                    <path d="M110 52 L118 110 L110 118 L102 110 Z" class="ej-compass__tip"/>
+                    <path d="M110 168 L118 110 L110 102 L102 110 Z" class="ej-compass__tail"/>
+                    <circle cx="110" cy="110" r="5" class="ej-compass__pin"/>
+                </g>
+            </svg>
+        </div>
+        <div class="ej-directions__track ej-snap" data-ej-compass-track>
+            {% for p in component.products %}
+                {% set letter = (p.subtitle ?: p.name)|first|upper %}
+                <div class="ej-directions__item" data-dir="{{ letter }}">
+                    {% include 'components.product.ej-card' with {product: p, mark: letter, variant: 'tall'} %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
