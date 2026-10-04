@@ -1,49 +1,59 @@
 {#
-| Variable                 | Type     | Description                                  |
-|--------------------------|----------|----------------------------------------------|
-| component.slides         | object[] | image, tone (light|dark), eyebrow, title, accent, button, url |
-| component.autoplay       | bool     |                                              |
-| position                 | int      |                                              |
+  Cinematic scenes: full-screen video (or image) scenes stacked on the scroll. Each next scene is
+  uncovered from beneath the current one with depth parallax; titles rise as a scene takes the stage.
+| Variable                 | Type     | Description                                                       |
+|--------------------------|----------|-------------------------------------------------------------------|
+| component.slides         | object[] | video, video_mobile (mp4 URLs), image (poster / fallback), tone,  |
+|                          |          | eyebrow, title, accent, button, url, loop_start (seconds)         |
+| position                 | int      |                                                                   |
 #}
-{% set numerals = ['٠١', '٠٢', '٠٣', '٠٤', '٠٥'] %}
-<section class="ej-hero" component-id="{{ componentId }}" data-ej-hero data-autoplay="{{ component.autoplay ? 1 : 0 }}" aria-roledescription="carousel" aria-label="{{ store.name }}">
-    <div class="ej-hero__slides">
-        {% for slide in component.slides %}
-            {% set tone %}{% include 'components.ej.pick' with {v: slide.tone} %}{% endset %}
-            {% set tone = tone|trim ?: 'dark' %}
-            <article class="ej-hero__slide ej-hero__slide--{{ tone }}{{ loop.first ? ' is-active' : '' }}" data-tone="{{ tone }}" aria-hidden="{{ loop.first ? 'false' : 'true' }}">
-                <div class="ej-hero__media" data-parallax="0.18">
+{% set total = component.slides|length %}
+<section class="ej-scenes" component-id="{{ componentId }}" data-ej-scenes aria-label="{{ store.name }}" style="--scenes: {{ total }}">
+    {% for slide in component.slides %}
+        {% set tone %}{% include 'components.ej.pick' with {v: slide.tone} %}{% endset %}
+        {% set tone = tone|trim ?: 'dark' %}
+        <article class="ej-scene ej-scene--{{ tone }}{{ slide.video ? ' ej-scene--video' : '' }}{{ loop.first ? ' is-current' : '' }}" data-scene="{{ loop.index0 }}" data-tone="{{ tone }}">
+            <div class="ej-scene__media" data-scene-media>
+                <div class="ej-scene__drift">
                     {% if slide.image %}
-                        <img src="{{ slide.image }}" alt="{{ slide.title }} {{ slide.accent }}" {{ loop.first ? 'fetchpriority="high"' : 'loading="lazy"' }}>
+                        <img class="ej-scene__img" src="{{ slide.image }}" alt="{{ slide.title }} {{ slide.accent }}" {{ loop.first ? 'fetchpriority="high"' : 'loading="lazy"' }}>
+                    {% endif %}
+                    {% if slide.video %}
+                        <video class="ej-scene__video" muted playsinline loop preload="none" aria-hidden="true"
+                               {% if slide.image %}poster="{{ slide.image }}"{% endif %}
+                               data-src="{{ slide.video }}" data-src-mobile="{{ slide.video_mobile }}" data-loop-start="{{ slide.loop_start ?: 0 }}"></video>
                     {% endif %}
                 </div>
-                <div class="ej-hero__copy">
-                    {% if slide.eyebrow %}<span class="ej-eyebrow ej-hero__eyebrow">{{ slide.eyebrow }}</span>{% endif %}
-                    {% if loop.first %}<h1 class="ej-hero__title">{% else %}<h2 class="ej-hero__title">{% endif %}
-                        <span class="ej-hero__line" data-words>{{ slide.title }}</span>
-                        {% if slide.accent %}<span class="ej-hero__line ej-hero__line--accent" data-words>{{ slide.accent }}</span>{% endif %}
-                    {% if loop.first %}</h1>{% else %}</h2>{% endif %}
-                    {% if slide.button %}
-                        <a class="ej-btn {{ tone == 'light' ? 'ej-btn--ink' : 'ej-btn--glass' }} ej-hero__cta" href="{{ slide.url ?: '#shop' }}" data-magnetic>
-                            <span>{{ slide.button }}</span>
-                        </a>
-                    {% endif %}
-                </div>
-            </article>
-        {% endfor %}
-    </div>
+            </div>
+            <span class="ej-scene__shade" aria-hidden="true"></span>
+            <span class="ej-scene__sweep" aria-hidden="true"></span>
+            {% if loop.first %}<canvas class="ej-hero__dust" data-ej-dust aria-hidden="true"></canvas>{% endif %}
 
-    <canvas class="ej-hero__dust" data-ej-dust aria-hidden="true"></canvas>
+            <div class="ej-scene__copy">
+                <span class="ej-scene__count ej-latin" aria-hidden="true"><b>{{ '%02d'|format(loop.index) }}</b><i></i>{{ '%02d'|format(total) }}</span>
+                {% if slide.eyebrow %}<span class="ej-eyebrow ej-scene__eyebrow">{{ slide.eyebrow }}</span>{% endif %}
+                {% if loop.first %}<h1 class="ej-scene__title">{% else %}<h2 class="ej-scene__title">{% endif %}
+                    <span class="ej-scene__line" data-words>{{ slide.title }}</span>
+                    {% if slide.accent %}<span class="ej-scene__line ej-scene__line--accent" data-words>{{ slide.accent }}</span>{% endif %}
+                {% if loop.first %}</h1>{% else %}</h2>{% endif %}
+                {% if slide.button %}
+                    <a class="ej-btn {{ tone == 'light' ? 'ej-btn--ink' : 'ej-btn--glass' }} ej-scene__cta" href="{{ slide.url ?: '#shop' }}" data-magnetic>
+                        <span>{{ slide.button }}</span>
+                    </a>
+                {% endif %}
+            </div>
+        </article>
+    {% endfor %}
 
-    {% if component.slides|length > 1 %}
-        <div class="ej-hero__tabs" role="tablist">
+    {% if total > 1 %}
+        <nav class="ej-scenes__dots" data-scene-dots aria-label="{{ store.name }}">
+            <span class="ej-scenes__rail" aria-hidden="true"><span data-scene-progress></span></span>
             {% for slide in component.slides %}
-                <button type="button" role="tab" class="ej-hero__tab{{ loop.first ? ' is-active' : '' }}" data-ej-slide="{{ loop.index0 }}" aria-selected="{{ loop.first ? 'true' : 'false' }}" aria-label="{{ slide.title }}">
-                    <span class="ej-hero__track"><span class="ej-hero__fill"></span></span>
-                    <span class="ej-hero__num ej-latin">{{ numerals[loop.index0] ?? loop.index }}</span>
+                <button type="button" class="ej-scenes__dot{{ loop.first ? ' is-active' : '' }}" data-scene-go="{{ loop.index0 }}" aria-label="{{ slide.title }}" aria-current="{{ loop.first ? 'true' : 'false' }}">
+                    <span class="ej-scenes__label">{{ slide.title }}</span>
                 </button>
             {% endfor %}
-        </div>
+        </nav>
     {% endif %}
 
     <span class="ej-hero__scroll ej-latin" aria-hidden="true">{{ trans('ej.scroll') }}<i></i></span>

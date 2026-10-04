@@ -2,6 +2,7 @@
  * Scroll choreography: reveals (play once), word splits, letter splits, number count-up, parallax,
  * card tilt + sheen, magnetic buttons and the gold cursor glow. All of it respects reduced motion.
  */
+import Lenis from 'lenis';
 import { arabicDigits } from './store.js';
 
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -84,6 +85,19 @@ export function reveals(root = document) {
     });
   }, { rootMargin: '0px 0px -10% 0px', threshold: 0.12 });
   targets.forEach((el) => io.observe(el));
+}
+
+/* ---------- weighted, inertial scrolling (wheel / trackpad; touch stays native) ---------- */
+export function smoothScroll() {
+  if (reduced || window.ejLenis) return;
+  const lenis = new Lenis({ lerp: 0.075, wheelMultiplier: 0.95, smoothWheel: true, syncTouch: false, anchors: { offset: -80 } });
+  window.ejLenis = lenis;
+  const raf = (t) => { lenis.raf(t); requestAnimationFrame(raf); };
+  requestAnimationFrame(raf);
+  /* menus, drawers and the intro lock the page: pause the smooth scroller with them */
+  new MutationObserver(() => {
+    if (document.documentElement.classList.contains('ej-locked')) lenis.stop(); else lenis.start();
+  }).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 }
 
 /* ---------- parallax: one rAF loop, transform only ---------- */

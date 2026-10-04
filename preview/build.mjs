@@ -188,14 +188,24 @@ async function build() {
 /* ---------- dev server ---------- */
 
 function serve(port = 5500) {
-  const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.png': 'image/png', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml', '.json': 'application/json' };
+  const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.png': 'image/png', '.jpg': 'image/jpeg', '.mp4': 'video/mp4', '.webm': 'video/webm', '.svg': 'image/svg+xml', '.json': 'application/json' };
   http.createServer((req, res) => {
     let p = decodeURIComponent(req.url.split('?')[0]);
     if (p.endsWith('/')) p += 'index.html';
     let file = path.join(DIST, p);
     if (!path.extname(file) && fs.existsSync(`${file}.html`)) file = `${file}.html`;
     if (!file.startsWith(DIST) || !fs.existsSync(file)) { res.writeHead(404); res.end('Not found'); return; }
-    res.writeHead(200, { 'Content-Type': types[path.extname(file)] || 'application/octet-stream', 'Cache-Control': 'no-store' });
+    const type = types[path.extname(file)] || 'application/octet-stream';
+    const size = fs.statSync(file).size;
+    const range = /bytes=(\d*)-(\d*)/.exec(req.headers.range || '');
+    if (range) { /* videos need byte ranges to seek (loop points) */
+      const start = range[1] ? Number(range[1]) : 0;
+      const end = range[2] ? Number(range[2]) : size - 1;
+      res.writeHead(206, { 'Content-Type': type, 'Content-Range': `bytes ${start}-${end}/${size}`, 'Accept-Ranges': 'bytes', 'Content-Length': end - start + 1, 'Cache-Control': 'no-store' });
+      fs.createReadStream(file, { start, end }).pipe(res);
+      return;
+    }
+    res.writeHead(200, { 'Content-Type': type, 'Content-Length': size, 'Accept-Ranges': 'bytes', 'Cache-Control': 'no-store' });
     fs.createReadStream(file).pipe(res);
   }).listen(port, () => console.log(`→ http://localhost:${port}`));
 }

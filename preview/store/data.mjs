@@ -4,7 +4,11 @@
  * on Salla, products and media come from the merchant dashboard.
  */
 
+import fs from 'node:fs';
+
 const media = (f) => `/media/${f}`;
+/* Drop a file named like this into preview/store/media/ and the scene picks it up; missing files fall back to the photo. */
+const video = (f) => (fs.existsSync(new URL(`./media/${f}`, import.meta.url)) ? media(f) : null);
 
 export const store = {
   id: 1,
@@ -117,9 +121,12 @@ export const comments = {
  */
 export const home = [
   { path: 'home.ej-hero', values: { slides: [
-    { image: media('hero-hands.jpg'), url: '#shop' },
-    { image: media('hero-couple.jpg'), url: '#new' },
-    { image: media('hero-velour.jpg'), url: '/product/velour', button: 'اكتشف ڤيلور · ٦٩٥ ر.س' },
+    { tone: 'light', image: media('scene-1-poster.jpg'), video: video('scene-1.mp4'), video_mobile: video('scene-1-mobile.mp4'), loop_start: 3,
+      eyebrow: '1926 · EAU DE PARFUM', url: '#shop' },
+    { tone: 'dark', image: media('scene-2-poster.jpg'), video: video('scene-2.mp4'), video_mobile: video('scene-2-mobile.mp4'), loop_start: 5,
+      eyebrow: 'YEARS · EAU DE PARFUM', button: 'اكتشف عطور سنوات', url: '#shop' },
+    { tone: 'dark', image: media('scene-3-poster.jpg'), video: video('scene-3.mp4'), video_mobile: video('scene-3-mobile.mp4'), loop_start: 3,
+      url: '/product/velour', button: 'اكتشف ڤيلور · ٦٩٥ ر.س' },
   ] } },
   { path: 'home.ej-collections', values: { items: [
     { image: media('velour.jpg'), url: '#shop:الجديد' },

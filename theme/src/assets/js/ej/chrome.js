@@ -33,15 +33,17 @@ export function header() {
   const bar = $('[data-ej-header]');
   if (!bar) return;
   const progress = $('[data-ej-progress]', bar);
-  const overHero = !!$('[data-ej-hero]');
-  document.body.classList.toggle('has-hero', overHero);
+  const hero = $('[data-ej-scenes]');
+  document.body.classList.toggle('has-hero', !!hero);
   let lastY = scrollY;
   let ticking = false;
   const update = () => {
     ticking = false;
     const y = scrollY;
-    bar.classList.toggle('is-solid', y > 40 || !overHero);
-    bar.classList.toggle('is-hidden', y > 480 && y > lastY + 2 && !document.documentElement.classList.contains('ej-locked'));
+    /* over the cinematic scenes the header stays transparent and present, like a title card */
+    const heroEnd = hero ? hero.offsetTop + hero.offsetHeight - bar.offsetHeight : 40;
+    bar.classList.toggle('is-solid', y > heroEnd);
+    bar.classList.toggle('is-hidden', y > heroEnd + 400 && y > lastY + 2 && !document.documentElement.classList.contains('ej-locked'));
     if (y < lastY - 2) bar.classList.remove('is-hidden');
     lastY = y;
     const max = document.documentElement.scrollHeight - innerHeight;

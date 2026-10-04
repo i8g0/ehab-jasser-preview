@@ -9,5 +9,8 @@
   "devDependencies": {
     "esbuild": "^0.25.0",
     "twig": "^1.17.1"
+  },
+  "dependencies": {
+    "lenis": "^1.3.26"
   }
 }

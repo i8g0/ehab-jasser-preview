@@ -10,6 +10,7 @@ chrome.intro();
 cartUI.init();
 
 const boot = () => {
+  motion.smoothScroll();
   chrome.header();
   chrome.menu();
   chrome.search();
