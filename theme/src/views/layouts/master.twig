@@ -1,22 +1,35 @@
 {#
-  Ehab Jasser — master layout (Salla Twilight).
-  Shared variables: store, theme, user, page, language — see Raed's master.twig for the full table.
-  Everything visual lives in app.css / app.js; this file only wires the shell.
+  Ehab Jasser — master layout (Salla Twilight, built on Raed).
+  Shared variables: store, theme, user, page, language — see Raed's documentation table.
+  Raed's own assets stay loaded so every page this theme doesn't redesign (categories, account,
+  blog, brands, thank-you…) keeps working; the Ehab Jasser shell (ej-app.css / ej-app.js) sits on top.
 #}
 <!DOCTYPE html>
 <html lang="{{ language.code }}" dir="{{ theme.is_rtl ? 'rtl' : 'ltr' }}">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#17120E">
-    {% hook 'head:start' %}
-    {% hook head %}
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&display=swap">
-    <link rel="stylesheet" href="{{ 'app.css' | asset }}">
-    {% block styles %}{% endblock %}
-    <script>
+    {{ theme.settings.set('placeholder', 'images/placeholder.png') }}
+
+    {% if __preview is not defined %}
+        {# Raed's web components used across the store's pages (product cards in listings, etc.) #}
+        <script defer data-cfasync="false" crossorigin="anonymous" src="{{ 'product-card.js'|asset }}"></script>
+        <script defer src="{{ 'main-menu.js'|asset }}"></script>
+    {% endif %}
+
+    {% block head_scripts %}{% endblock %}
+
+    <script data-cfasync="false">
+        {# globals Raed's app.js reads #}
+        window.header_is_sticky = "";
+        window.imageZoom = "{{ theme.settings.get('imageZoom') }}";
+        window.can_access_wallet = {{ user.can_access_wallet ? 'true' : 'false' }};
+        window.enable_more_menu = "";
+        window.enable_add_product_toast = "";
+        window.notify_when_available_in_card = "{{ theme.settings.get('notify_when_available_in_card', true) }}";
+
         window.EJ_SETTINGS = {
             sound: {{ theme.settings.get('enable_sound', true) ? 'true' : 'false' }},
             intro: {{ theme.settings.get('enable_intro', true) ? 'true' : 'false' }},
@@ -34,9 +47,34 @@
         };
         document.documentElement.classList.add('js');
     </script>
+
+    {% hook 'head:start' %}
+    {% hook head %}
+    {% block styles %}{% endblock %}
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&display=swap">
+    {# Raed's styles first (other pages, Salla components), Ehab Jasser on top #}
+    <link rel="stylesheet" href="{{ 'app.css' | asset }}">
+    {% if __preview is not defined %}
+        <link rel="stylesheet" href="{{ 'fonts/sallaicons.css'|cdn }}"/>
+    {% endif %}
+    <link rel="stylesheet" href="{{ 'ej-app.css' | asset }}">
+
+    <style>
+        :root {
+            --font-main: 'IBM Plex Sans Arabic';
+            --color-primary: {{ theme.color.primary }};
+            --color-primary-dark: {{ theme.color.darker(0.15) }};
+            --color-primary-light: {{ theme.color.lighter(0.15) }};
+            --color-primary-reverse: {{ theme.color.reverse_text }};
+            --s-radius: 0;
+        }
+    </style>
     {% hook 'head:end' %}
 </head>
-<body id="app" class="ej page-{{ page.slug|replace({'.': '-'}) }} {% hook 'body:classes' %}">
+<body id="app" class="ej theme-raed page-{{ page.slug|replace({'.': '-'}) }} {% hook 'body:classes' %}">
 {% hook 'body:start' %}
 
 {% if theme.settings.get('enable_intro', true) and page.slug == 'index' %}
@@ -56,11 +94,21 @@
 <div class="ej-grain" aria-hidden="true"></div>
 <div class="ej-cursor" aria-hidden="true"></div>
 
-<script defer src="{{ 'app.js' | asset }}"></script>
+{% if __preview is not defined %}
+    <script defer crossorigin="anonymous" src="{{ 'app.js' | asset }}"></script>
+{% endif %}
+<script defer src="{{ 'ej-app.js' | asset }}"></script>
 {% block scripts %}{% endblock %}
 
-{# Salla's own search modal; the header search button opens it via `search::open`. #}
+{# Salla's own modals; the header search button opens <salla-search> via `search::open`. #}
 <salla-search></salla-search>
+{% if __preview is not defined %}
+    <salla-offer-modal></salla-offer-modal>
+    <salla-login-modal></salla-login-modal>
+    {% if store.scope %}
+        <salla-scopes selection="{{ store.scope.display_as == 'popup' ? 'mandatory' : 'optional' }}"></salla-scopes>
+    {% endif %}
+{% endif %}
 {% hook 'body:end' %}
 </body>
 </html>

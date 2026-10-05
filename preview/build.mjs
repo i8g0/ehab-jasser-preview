@@ -57,11 +57,17 @@ const preprocess = (src) => src
 
 function loadTemplates() {
   const files = walk(VIEWS).filter((f) => f.endsWith('.twig'));
+  let loaded = 0;
   files.forEach((file) => {
     const id = path.relative(VIEWS, file).replace(/\.twig$/, '').split(path.sep).join('.');
-    Twig.twig({ id, data: preprocess(fs.readFileSync(file, 'utf8')), allowInlineIncludes: true, rethrow: true });
+    try {
+      Twig.twig({ id, data: preprocess(fs.readFileSync(file, 'utf8')), allowInlineIncludes: true, rethrow: true });
+      loaded += 1;
+    } catch {
+      /* Raed's pages the preview never renders may use PHP-Twig-only syntax (arrow functions): skip them */
+    }
   });
-  return files.length;
+  return loaded;
 }
 
 /* ---------- twilight.json defaults + merchant values ---------- */
@@ -104,7 +110,7 @@ async function build() {
 
   /* theme assets: same entry points as Raed (app/home/product/cart) */
   await esbuild.build({
-    entryPoints: ['app', 'home', 'product', 'cart'].map((n) => path.join(ASSETS, 'js', `${n}.js`)),
+    entryPoints: ['ej-app', 'ej-home', 'ej-product', 'ej-cart'].map((n) => path.join(ASSETS, 'js', `${n}.js`)),
     outdir: path.join(DIST, 'assets'),
     bundle: true,
     minify: true,
@@ -113,8 +119,8 @@ async function build() {
     logLevel: 'warning',
   });
   await esbuild.build({
-    entryPoints: [path.join(ASSETS, 'styles', 'app.css')],
-    outfile: path.join(DIST, 'assets', 'app.css'),
+    entryPoints: [path.join(ASSETS, 'styles', 'ej.css')],
+    outfile: path.join(DIST, 'assets', 'ej-app.css'),
     bundle: true,
     minify: true,
     logLevel: 'warning',
@@ -147,7 +153,7 @@ async function build() {
 
   const theme = {
     is_rtl: true,
-    color: { primary: '#17120E' },
+    color: { primary: '#17120E', reverse_text: '#FFFFFF', darker: () => '#100C09', lighter: () => '#3B3029' },
     settings: {
       get: (key, fallback = null) => {
         const f = twilight.settings.find((s) => s.id === key);
@@ -156,7 +162,10 @@ async function build() {
       set: () => '',
     },
   };
-  const base = { store, theme, language: { code: 'ar' }, user: { type: 'guest' } };
+  /* __preview hides Raed's scripts (they need the real Salla SDK); Raed's compiled CSS is still used */
+  const base = { store, theme, language: { code: 'ar' }, user: { type: 'guest' }, __preview: true };
+  const raedCss = path.join(THEME, 'public', 'app.css');
+  if (fs.existsSync(raedCss)) fs.copyFileSync(raedCss, path.join(DIST, 'assets', 'app.css'));
 
   const render = (id, ctx, out) => {
     const title = ctx.page.slug === 'index' ? `${store.name} — العطر قصيدة بليّا حروف` : `${ctx.page.title} — ${store.name}`;
@@ -215,7 +224,9 @@ await build();
 if (process.argv.includes('--watch')) {
   serve(Number(process.env.PORT) || 5500);
   let timer;
-  [THEME, PREVIEW].forEach((dir) => fs.watch(dir, { recursive: true }, () => {
+  [THEME, PREVIEW].forEach((dir) => fs.watch(dir, { recursive: true }, (_event, file) => {
+    /* Raed's toolchain output (node_modules, public/) is not a source: ignore it */
+    if (file && /node_modules|(^|[\\/])public[\\/]/.test(file)) return;
     clearTimeout(timer);
     timer = setTimeout(() => build().catch((e) => console.error('✗', e.message)), 150);
   }));

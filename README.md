@@ -22,16 +22,26 @@ npm run build    # يبني نسخة Vercel في dist/
 
 ## النقل إلى سلة
 
-1. أنشئ ثيم جديد من ثيم Raed الرسمي: `salla theme create` (Salla CLI).
-2. انسخ محتويات `theme/` فوقه:
-   - `twilight.json` ← يستبدل الملف الموجود (فيه ١٢ مكوّن للرئيسية + إعدادات الثيم).
-   - `src/views/**` ← القوالب (الرئيسية، المنتج، السلة، الهيدر، الفوتر، المكوّنات).
-   - `src/assets/js/app.js · home.js · product.js · cart.js` ← نفس أسماء ملفات Raed، تستبدلها مباشرة. ملفات `ej/` مجلد جديد بجانبها.
-   - `src/assets/styles/app.css` ← استورده من ملف الستايل الرئيسي في Raed (`@import './app.css';`) أو اجعله المدخل.
-   - `src/assets/images/logo.png` و `src/locales/*.json` (ادمج مفاتيح `ej` مع ملفات Raed).
-   - التمرير الناعم يعتمد على مكتبة Lenis: نفّذ `npm i lenis` في مشروع الثيم (Webpack في Raed يضمّها تلقائيًا).
-3. `salla theme preview` للتجربة على متجرك التجريبي، ثم `salla theme publish`.
+`theme/` ثيم سلة كامل مبني على ثيم Raed الرسمي: كل صفحات Raed الأخرى (التصنيفات، حساب العميل، المدونة، الماركات، صفحة الشكر…) موجودة وتعمل، والصفحات المصمّمة (الرئيسية، المنتج، السلة) والهيدر والفوتر هي تصميم إيهاب الجاسر.
+
+| الملف | الدور |
+|---|---|
+| `twilight.json` | مكوّنات وإعدادات إيهاب الجاسر أولًا، ثم مكوّنات وإعدادات Raed (تُبنى بـ `node tools/twilight.mjs`) |
+| `src/assets/js/ej-*.js` · `src/assets/js/ej/` · `src/assets/styles/ej.css` | كود وتصميم إيهاب الجاسر (مدخلات `ej-app`، `ej-home`، `ej-product`، `ej-cart` في `webpack.config.js`) |
+| باقي `src/` و`public/` | ثيم Raed كما هو |
+
+**البناء** (من داخل `theme/`، بأدوات Raed نفسها):
+```bash
+npx pnpm@10 install
+npx pnpm@10 run production   # يبني public/ — سلة تقرأ الملفات المبنية من هنا
+```
+
+**الربط بسلة:** سلة تربط كل ثيم بمستودع GitHub يكون `twilight.json` في جذره، لذلك يُنشر مجلد `theme/` كمستودع مستقل:
+1. `npm i -g @salla.sa/cli` ثم `salla login` (حساب شركاء سلة).
+2. أنشئ مستودعًا جديدًا لمحتوى `theme/` (مثلًا `git subtree split --prefix theme -b salla-theme` ثم ادفع الفرع لمستودع جديد).
+3. من داخل المجلد: `salla theme preview` للتجربة على متجر تجريبي، ثم `salla theme publish`.
 4. من محرر الثيم في سلة: رتّب مكوّنات الرئيسية، ارفع الصور، واختر المنتجات لكل قسم.
+5. املأ `author_email` و`support_url` في `twilight.json` قبل النشر.
 
 ### ما يجب ضبطه في لوحة سلة
 
